@@ -13,13 +13,21 @@
 </head>
 
 <body>
-
     <!-- ================= NAVBAR (Paula) ================= -->
-    <header>
-        <!-- Aquí va tu barra de navegación -->
+   <header>
+    <!-- Aquí va tu barra de navegación -->
+     <nav class="navbar">
+        <div class="logo">EcoEnergy</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#galeria">galeria</a></li>
+                <li><a href="#calculadora">calculadora</a></li>
+                <li><a href="#graficos">graficos</a></li>
+                <li><a href="#tablas">tablas</a></li>
+                <li><a href="#curiosidades">curiosidades</a></li>
+            </ul>
+     </nav>
     </header>
-
-
     <!-- ================= HOME / INICIO (Ingrid) ================= -->
     <section id="home">
         <!-- Imagen principal, texto, introducción, datos ventajas y demas -->
@@ -47,14 +55,66 @@
 
 
     <!-- ================= DATOS CURIOSOS (Paula) ================= -->
-    <section id="datos-curiosos">
+    <section id="curiosidades">
         <!-- Datos interesantes -->
+         <h2>CURIOSIDADES</h2>
+         <div class="accordion">
+             <div class="item">
+                <button class="accordion-btn">¿Sabias que una planta hidraulica puede durar mas de 100 años?
+                </button>
+                <div class="content">
+                    <p>Muchas centrales hidroelectricas tiene una vida ultil extremadamente larga.</p>
+                    <p>Algunas plantas construidas a principio del siglo XX siguen funcionando hoy en dia con mantenimiento adecuado</p>
+                </div>
+             </div>    
+
+             <div class="item">
+                <button class="accordion-btn">Algunas hidroelectricas puede generar electricidad bajo el hielo
+                </button>
+                <div class="content">
+                    <p>En paises muy frios como Canada o Noruega, algunas centrakes hidroelectricas siguen funcionando incluso cuando los rios estan parcialmente congelados. El agua sigue fluyendo por debajo del hielo, permitiendo que las turbinas generen electricidad sin interrupcion
+                    </p>
+                </div>
+             </div>
+
+             <div class="item">
+                <button class="accordion-btn">No toda la energia hidraulica viene de represas
+                </button>
+                <div class="content">
+                    <p>Existen sistemas que aprovechan corrientes naturales de rios sin necesidad de grandes embalses,reduciendo el impacto ambiental y manteniendo el flujo natural del agua</p>
+                </div>
+             </div>
+
+             <div class="item">
+                <button class="accordion-btn">La energia hidraulica puede almacenar elctricidad
+                </button>
+                <div class="content">
+                    <p>Algunas plantas utilizan sistemas de bombeo: suben el agua a un nivel mas alto cuando sobra emergia y laliberan para generar elctricidad cuando se necesita. Es como una bateria gigante</p>
+                </div>
+             </div>    
+
+             <div class="item">
+                <button class="accordion-btn">Es una de las fuentes mas usadas en el mundo
+                </button>
+                <div class="content">
+                    <p>La energia hidraulica representa gran parte de enrgia renovable global, siendo clave en paises como China, Brasil y Canada</p>
+                </div>
+             </div>    
+         </div>
     </section>
 
 
     <!-- ================= FOOTER (Paula) ================= -->
-    <footer>
+    <footer class="footer">
         <!-- Información final -->
+         <div class="footer-content">
+            <h3>EcoEnergy</h3>
+            <p>Proyecto acdemico sobre energia hidraulica enfocado en el analisis , visualizacion y comprension su impacto en el medio ambiente</p>
+            <p>authors:  Dahiana Romero, Reinel Rodriguez, Ingrid Rodriguez, Paula Cortes</p>
+
+            <p class="footer-copy">© 2026 EcoEnergy | Todos los derechos reservados</p>
+
+         </div>
     </footer>
 
 

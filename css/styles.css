@@ -1,6 +1,119 @@
 /* ===== ESTILOS BASE ===== */
+
+/* VARIABLE DE COLORES  */
+:root {
+    --azul-oscuro: #04547e;
+    --azul-petroleo: #11648a;
+    --turquesa: #188b88;
+    --verde: #1b5728;
+    --verde-claro: #a9d366;
+}
+/* RESET (Paula) */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+/* NAVBAR (Paula) */
+.navbar{
+    display: flex; /*todo en fila*/
+    justify-content: space-between; /*separa el logo del menu*/
+    align-items:center;/*centra vertical*/
+    background-color: /* uso de variable de color*/
+    var(--azul-petroleo);
+    padding:20px 60px;  /*espacio interno: arr-abj 15px, lados 30px*/
+}
+.logo{
+    color: white;
+    font-size:30px;
+    font-weight: bold; /*texto en negrita*/
+}
+
+.nav-links{
+    list-style: none; /*quita los punticos de la lista*/
+    display:flex; /* acomoda horizontal los titulos de nav*/
+    gap:30px;/*espacio entre cada link*/
+    font-size: 20px;
+}
+.nav-links a{
+    text-decoration: none; /*quita subrayado*/
+    color:white;
+    font-weight: 600;/*texto en negrita*/
+    transition: 0.3s; /*animacion al cambiar de estilo*/
+}
+.nav-links a:hover {
+    color : var(--azul-oscuro);/*cuando pasas el mouse */
+}
+
+/* CURIOSIDADES (Paula) */
+ #curiosidades{  /*seccion con id curiosidades*/
+    padding:20px ; /*espacio interno*/
+    background-color:#f5f5f5;
+}
+#curiosidades h2{ /*titulo dentro de la */
+    text-align: center;/*centra el texto*/
+    margin-bottom: 18px; /*espacio debajo*/
+    color:var(--verde);
+    font-family:'Times New Roman', Times, serif;
+    font-size: 32px;
+}
+.accordion{ /*contenedor del acordeon*/
+    max-width: 900; /*ancho maximo*/
+    margin:auto; /*centra el texto*/
+    
+
+    
+}
+.item{ /*cada bloque de curiosidades*/
+    margin-bottom: 18px; /*espacio entre bloques*/
+    
+}
+.accordion-btn { /*boton de cada  curiosidad*/
+    width:100%; /* ocupa todo el ancho*/
+    padding: 20px; /*mas altos*/
+    color: rgb(3, 3, 3);
+    text-align:left; /*alinea a la izquierda el texto*/
+    cursor: pointer; /* cambia a cursor de mano*/
+    font-size: 18px;
+    box-shadow: 0px  0px 5px #064d23;
+    border:none;
+    background-color:#d3dfab;
+}
+.accordion-btn:hover{ /*hover--al pasar el mouse*/
+    background-color: var(--azul-oscuro);
+    border:4px;
+}
+.content{ /*contenido oculto*/
+    display: none;/*oculta el contenido*/
+    font-size:18px;
+    padding: 20px;
+    background-color:rgba(22, 165, 9, 0.171);
+    border-left: 5px solid var(--verde);
+    border-radius: 5px; /*bordes redodneados*/
+}
+.content.active{
+    display:block;
+}
+
+/* FOOTER (Paula) */
+.footer{   /*seccion del footer*/
+background-color:#216868;
+color:white;
+text-align:center;
+padding:30px;
+}
+.footer p{ /*parrafos del footer*/
+    margin: 5px 0; /*espacio arriba y abajo del section*/
+    }
+
+.footer h3{ /*tittulo del fooder*/
+    margin-bottom: 10px; /*espacio debjo*/
+    }
+.footer-copy{ /*texto de derechos*/
+    margin-top:15px; /* espacio superior*/
+    font-size: 14px;/* texto mas pequeño*/
+    color:var(--verde-claro);
+}  
+    
+
+
