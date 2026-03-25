@@ -1,0 +1,181 @@
+
+
+section {
+    max-width: 1100px; /* ancho uniforme */
+    margin: auto; /* centra TODO */
+    padding: 80px 20px; /* mismo espacio para todos */
+}
+
+
+section+section {
+ 
+    margin-top:40px; /* centra TODO */
+   /
+
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* HERO */
+.hero{
+    height: 15vh;
+    background: linear-gradient(rgba(11, 108, 138, 0.6), rgba(63, 209, 214, 0.6)),
+                url('Hidroelectricas.jpg');
+    background-size: cover;
+    background-position: center;
+    font-weight: 600;/*texto en negrita*/
+}
+
+p1{
+    text-align: center;  
+    font-weight: bold;    
+    font-size: 20px;     
+    font-style: italic;   
+    max-width: 800px;
+    
+}
+
+.navbar-brand{
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: none;
+    font-weight: 600;/*texto en negrita*/
+    
+}
+
+/* Títulos */
+    h2 {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 40px;
+    color:var(--verde);
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+  }  
+
+
+/* Párrafos */
+p{
+    text-align: justify;
+}
+
+/* Imágenes */
+img{
+    transition: transform 0.3s ease;
+}
+
+img:hover{
+    transform: scale(1.05);
+}
+
+/* Espaciado */
+section{
+    padding-top: 40px;
+    
+}
+
+/* Botón */
+button{
+    padding: 10px 20px;
+    
+}
+
+.nav-item{
+    padding: 15px;
+    font-size: 22px;
+    text-decoration: dotted;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.item{
+    margin-bottom:20px;
+}
+
+/* ===== EDISION PAULA ( FOOTER / DATOS CURIOSOS===== */
+
+/* VARIABLE DE COLORES  */
+:root {
+    --azul-oscuro: #04547e;
+    --azul-petroleo: #11648a;
+    --turquesa: #188b88;
+    --verde: #1b5728;
+    --verde-claro: #a9d366;
+}
+
+/* CURIOSIDADES (Paula) */
+ #curiosidades{  /*seccion con id curiosidades*/
+padding: 100px 20px ; /*espacio interno*/
+background-color:#fffffff5;
+}
+#curiosidades h2{ /*titulo dentro de la */
+text-align: center;/*centra el texto*/
+margin-bottom: 18px; /*espacio debajo*/
+color:var(--verde);
+font-family:'Times New Roman', Times, serif;
+font-size: 32px;
+font-weight: bold;
+}
+.accordion{ /*contenedor del acordeon*/
+max-width: 900; /*ancho maximo*/
+margin:auto; /*centra el texto*/
+    
+}
+.item{ /*cada bloque de curiosidades*/
+    margin-bottom: 18px; /*espacio entre bloques*/
+    
+}
+.accordion-btn { /*boton de cada  curiosidad*/
+    width:100%; /* ocupa todo el ancho*/
+    padding: 18px; /*mas altos*/    
+    color: rgb(3, 3, 3);
+    text-align:left; /*alinea a la izquierda el texto*/
+    cursor: pointer; /* cambia a cursor de mano*/
+    font-size: 18px;
+    box-shadow: 0px  0px 5px #064d23;
+    border:none;
+    background-color:#4ca56a;
+    transition:all 0.3s ease-out;
+
+}
+.accordion-btn:hover{ /*hover--al pasar el mouse*/
+    background-color:#4a9ca1f5;
+    border:4px;
+    
+}
+.content{ /*contenido oculto*/
+    display: none;/*oculta el contenido*/
+    font-size:18px;
+    animation: backwards 0.3s;
+    padding: 20px;
+    background-color:rgba(22, 165, 9, 0.171);
+    border-left: 5px solid var(--verde);
+    border-radius: 5px; /*bordes redodneados*/
+}
+.content.active{
+    display:block;
+}
+
+/* FOOTER (Paula) */
+.footer{   /*seccion del footer*/
+background-color: black;
+color:white;
+text-align:center;
+padding:15px 10px;
+}
+.footer p{ /*parrafos del footer*/
+font-family:'Times New Roman', Times, serif;
+ margin: 5px 0; /*espacio arriba y abajo del section*/
+ text-align: center;
+}
+
+.footer h2{ /*tittulo del fooder*/
+    margin-bottom: 10px; /*espacio debjo*/
+    font-family: Georgia, 'Times New Roman', Times, serif;
+ }
+.footer-copy{ /*texto de derechos*/
+margin-top:15px; /* espacio superior*/
+font-size: 14px;/* texto mas pequeño*/
+color:var(--verde-claro);
+}
