@@ -1,0 +1,50 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* HERO */
+.hero{
+    height: 15vh;
+    background: linear-gradient(rgba(11, 108, 138, 0.6), rgba(63, 209, 214, 0.6)),
+                url('Hidroelectricas.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+p1{
+    text-align: center;  
+    font-weight: bold;    
+    font-size: 20px;     
+    font-style: italic;   
+    max-width: 800px;
+}
+
+
+/* Títulos */
+h2{
+    margin-bottom: 15px;
+}
+
+/* Párrafos */
+p{
+    text-align: justify;
+}
+
+/* Imágenes */
+img{
+    transition: transform 0.3s ease;
+}
+
+img:hover{
+    transform: scale(1.05);
+}
+
+/* Espaciado */
+section{
+    padding-top: 40px;
+}
+
+/* Botón */
+button{
+    padding: 10px 20px;
+}

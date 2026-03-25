@@ -1,0 +1,33 @@
+Archivo HTML:
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Edad</title>
+    <link rel="stylesheet" href="formulario.css">
+</head>
+<body>
+    <h1>Ejercicio de Verificación de Edad</h1>
+    
+    <!-- Formulario -->
+    <form id="formulario">
+     <fieldset>
+      <legend>Fomulario Persona</legend>
+        <label for="nb">Nombre:</label>
+        <input type="text" id="fNombre" required><br><br>
+        
+        <label for="ed">Edad:</label>
+        <input type="number" id="fEdad" required><br><br>
+        
+        <!-- Botón sin la llamada a función en el evento onclick -->
+        <button type="button" id="verificarBtn">Verificar</button>
+      </fieldset>  
+    </form>
+
+    <!-- Contenedor para mostrar el resultado -->
+    <p id="resultado"></p>
+ 
+    <script src="formulario.js" defer></script>
+</body>
+</html>
