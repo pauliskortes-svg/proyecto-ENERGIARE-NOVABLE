@@ -1,0 +1,24 @@
+#contenido { 
+    text-align: center; 
+    padding: 20px;
+}
+h1 { 
+    color: #198754; 
+    margin-bottom: 15px;
+}
+.bordes { 
+    border-radius: 15px; 
+    width: 100%; 
+    max-width: 800px; 
+    margin: 20px auto;
+}
+.bordes.invertido {
+    transform: scaleX(-1);
+}
+.btn-success {
+    background-color: #198754;
+    border: none;
+}
+.btn-success:hover {
+    background-color: #146c43;
+}
