@@ -1,24 +1,21 @@
-#contenido { 
-    text-align: center; 
-    padding: 20px;
+/* === ESTILOS PARA LAS IMÁGENES DE REPRESAS === */
+.img-fluid {
+    display: block;           /* importante para centrar */
+    margin-left: auto;
+    margin-right: auto;       /* centra la imagen */
+    max-width: 75%;           /* tamaño mediano (puedes cambiar a 65% o 80% si quieres) */
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+    margin-top: 25px;
 }
-h1 { 
-    color: #198754; 
-    margin-bottom: 15px;
-}
-.bordes { 
-    border-radius: 15px; 
-    width: 100%; 
-    max-width: 800px; 
-    margin: 20px auto;
-}
-.bordes.invertido {
-    transform: scaleX(-1);
-}
-.btn-success {
-    background-color: #198754;
-    border: none;
-}
-.btn-success:hover {
-    background-color: #146c43;
+
+/* Si quieres que la segunda imagen (Sogamoso) también esté centrada y mediana */
+.bordes {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 75%;
+    height: auto;
 }
