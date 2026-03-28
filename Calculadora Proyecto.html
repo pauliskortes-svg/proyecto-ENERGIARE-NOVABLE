@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1433,3 +1434,1405 @@ window.addEventListener('load',()=>setTimeout(calcular,400));
 </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>EcoCalc v2 – Energía Renovable & IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+:root{
+  --bg:#07100a;--surface:#0f1a12;--card:#132016;--card2:#162419;
+  --border:#1c2e20;--border2:#243829;
+  --g1:#3dff7a;--g2:#ffe45e;--g3:#5eb8ff;--g4:#c2ff5e;--g5:#ff7eb3;
+  --text:#e4f0e7;--muted:#5a7a62;--muted2:#3d5442;
+  --r:14px;--mono:'Space Mono',monospace;--sans:'Syne',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+
+/* BG grid */
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(61,255,122,.03)1px,transparent 1px),linear-gradient(90deg,rgba(61,255,122,.03)1px,transparent 1px);
+  background-size:52px 52px;pointer-events:none}
+
+/* Orbs */
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0;opacity:.3}
+.o1{width:600px;height:600px;background:#1a4d2e;top:-150px;left:-120px}
+.o2{width:450px;height:450px;background:#1a3a4d;bottom:-100px;right:-80px}
+.o3{width:300px;height:300px;background:#3a2a00;top:40%;right:5%}
+
+/* Layout */
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:52px 24px 100px}
+
+/* HEADER */
+header{text-align:center;margin-bottom:60px;animation:fdD .8s ease both}
+.logo-chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;
+  letter-spacing:.18em;color:var(--g1);border:1px solid rgba(61,255,122,.3);padding:5px 16px;
+  border-radius:999px;margin-bottom:22px;text-transform:uppercase;background:rgba(61,255,122,.05)}
+h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;line-height:1.02;letter-spacing:-.025em}
+h1 em{color:var(--g1);font-style:normal}
+.sub{margin-top:14px;color:var(--muted);font-size:.98rem;max-width:520px;margin-inline:auto;line-height:1.6}
+
+/* SECTION LABEL */
+.sec-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--g1);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:32px 36px}
+.card-sm{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px}
+
+/* INPUT SECTION */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:26px}
+@media(max-width:580px){.input-grid{grid-template-columns:1fr}}
+label.lbl{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;font-family:var(--mono)}
+input[type=number],select{width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:13px 15px;color:var(--text);font-family:var(--mono);font-size:.95rem;
+  outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+input[type=number]:focus,select:focus{border-color:var(--g1);box-shadow:0 0 0 3px rgba(61,255,122,.1)}
+select option{background:var(--surface)}
+input[type=range]{-webkit-appearance:none;width:100%;height:5px;background:var(--border2);
+  border-radius:99px;outline:none;margin-top:10px;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;
+  background:var(--g1);border-radius:50%;box-shadow:0 0 10px rgba(61,255,122,.5);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.3)}
+.rval{font-family:var(--mono);font-size:.8rem;color:var(--g1);margin-top:5px;display:block}
+
+/* BUTTON */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px;
+  background:var(--g1);color:#050f07;font-family:var(--sans);font-weight:800;font-size:1rem;
+  border:none;border-radius:10px;cursor:pointer;transition:transform .15s,box-shadow .15s;margin-top:6px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(61,255,122,.3)}
+.btn:active{transform:translateY(0)}
+.btn svg{width:18px;height:18px}
+
+/* RESULTS GRID */
+.res-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.rc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px 20px;
+  position:relative;overflow:hidden;transition:transform .2s;cursor:default}
+.rc:hover{transform:translateY(-3px)}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.rc.sol::before{background:var(--g2)}.rc.win::before{background:var(--g3)}
+.rc.hyd::before{background:#5efff0}.rc.bio::before{background:var(--g4)}
+.rc .ico{font-size:1.7rem;margin-bottom:10px;display:block}
+.rc .rlbl{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-family:var(--mono);margin-bottom:4px}
+.rc .rval2{font-family:var(--mono);font-size:1.5rem;font-weight:700;line-height:1}
+.rc.sol .rval2{color:var(--g2)}.rc.win .rval2{color:var(--g3)}
+.rc.hyd .rval2{color:#5efff0}.rc.bio .rval2{color:var(--g4)}
+.rc .runit{font-size:.72rem;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+.rc .rdesc{font-size:.78rem;color:var(--muted);margin-top:10px;line-height:1.5}
+
+/* CO2 bar */
+.co2-block{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px 28px;margin-bottom:28px}
+.co2-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.co2-hdr .lbl2{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:var(--mono)}
+.co2-hdr .cval{font-family:var(--mono);font-size:1.3rem;color:var(--g1)}
+.bar-track{height:8px;background:var(--border2);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--g1),var(--g2));border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.bar-leg{display:flex;justify-content:space-between;margin-top:7px;font-family:var(--mono);font-size:.64rem;color:var(--muted)}
+
+/* CHART SECTION */
+.charts-2col{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px}
+@media(max-width:700px){.charts-2col{grid-template-columns:1fr}}
+.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:26px;position:relative}
+.chart-title{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:18px}
+.chart-wrap canvas{max-height:280px}
+.chart-full{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:26px;margin-bottom:22px}
+.chart-full canvas{max-height:320px}
+
+/* 4-metric tabs */
+.tab-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 14px;border-radius:99px;border:1px solid var(--border2);color:var(--muted);
+  cursor:pointer;transition:all .2s;background:transparent}
+.tab.active,.tab:hover{border-color:var(--g1);color:var(--g1);background:rgba(61,255,122,.07)}
+
+/* AI PANEL */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px}
+@media(max-width:700px){.ai-grid{grid-template-columns:1fr}}
+.ai-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r);padding:24px 26px}
+.ai-title{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--g5);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ai-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;
+  border-bottom:1px solid var(--border);font-size:.85rem}
+.ai-row:last-child{border-bottom:none}
+.ai-row .ai-name{color:var(--text);font-family:var(--mono);font-size:.8rem}
+.ai-row .ai-kwh{color:var(--g5);font-family:var(--mono);font-size:.85rem;font-weight:700}
+.ai-row .ai-bar{flex:1;height:4px;background:var(--border2);border-radius:99px;margin:0 12px;overflow:hidden}
+.ai-row .ai-fill{height:100%;background:var(--g5);border-radius:99px;transition:width 1s ease}
+.ai-input-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.ai-input-row input{width:90px;background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none}
+.ai-input-row input:focus{border-color:var(--g5)}
+.ai-input-row label{color:var(--muted);font-family:var(--mono);font-size:.72rem;letter-spacing:.06em}
+.ai-equiv{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-top:10px;line-height:1.7}
+.ai-equiv span{color:var(--g4)}
+.appliance-list{margin-top:4px}
+.app-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.app-row:last-child{border-bottom:none}
+.app-row .app-name{font-size:.8rem;color:var(--text);font-family:var(--mono)}
+.app-row .app-val{font-family:var(--mono);font-size:.78rem;color:var(--g3)}
+.app-row .app-b{flex:1;height:4px;background:var(--border2);border-radius:99px;margin:0 10px;overflow:hidden}
+.app-row .app-f{height:100%;background:var(--g3);border-radius:99px;transition:width 1s ease}
+
+/* CSV section */
+.csv-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:32px;text-align:center;
+  cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:22px;position:relative}
+.csv-zone:hover,.csv-zone.drag{border-color:var(--g1);background:rgba(61,255,122,.04)}
+.csv-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.csv-icon{font-size:2.2rem;margin-bottom:10px}
+.csv-lbl{font-family:var(--mono);font-size:.8rem;color:var(--muted);letter-spacing:.06em}
+.csv-lbl span{color:var(--g1)}
+.csv-status{font-family:var(--mono);font-size:.75rem;margin-top:8px;color:var(--g4)}
+.csv-controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.csv-controls select{width:auto;min-width:160px;padding:9px 12px;font-size:.82rem}
+.csv-controls label{font-size:.72rem}
+
+/* Heatmap */
+#heatmap-wrap{overflow-x:auto;margin-top:12px}
+.heatmap-table{border-collapse:collapse;font-family:var(--mono);font-size:.62rem;min-width:100%}
+.heatmap-table th{padding:4px 6px;color:var(--muted);text-align:center;position:sticky;top:0;background:var(--card)}
+.heatmap-table td{padding:3px 5px;text-align:center;border-radius:3px;cursor:default;transition:opacity .1s;min-width:28px}
+.heatmap-table td:hover{opacity:.7}
+.hm-label{color:var(--muted);font-size:.65rem;text-align:right!important;padding-right:8px!important;white-space:nowrap}
+
+/* table */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{padding:12px 20px;text-align:left;font-family:var(--mono);font-size:.65rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.data-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+.data-table tbody tr:last-child{border-bottom:none}
+.data-table tbody tr:hover{background:rgba(255,255,255,.02)}
+.data-table td{padding:11px 20px;font-family:var(--mono);font-size:.82rem}
+.data-table td:not(:first-child){color:var(--g1)}
+
+/* hidden / visible */
+#results{opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s;pointer-events:none}
+#results.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#csv-results{display:none}
+#csv-results.visible{display:block}
+
+/* FOOTER */
+footer{text-align:center;margin-top:72px;color:var(--muted);font-family:var(--mono);font-size:.68rem;letter-spacing:.08em}
+
+/* ANIMATIONS */
+@keyframes fdD{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fdU{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fdU .7s ease both}
+.anim2{animation:fdU .7s .15s ease both}
+.anim3{animation:fdU .7s .25s ease both}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ── WORLD MAP ── */
+.map-container{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:26px;margin-bottom:22px;position:relative;overflow:hidden}
+.map-container svg{width:100%;height:auto;display:block}
+/* D3 country paths */
+.map-container svg .country{
+  fill:#162a1a;stroke:#0a150c;stroke-width:.4px;
+  transition:fill .3s,opacity .3s;cursor:pointer}
+.map-container svg .country:hover{stroke:var(--g1);stroke-width:1px;filter:brightness(1.4)}
+.map-container svg .country.selected{stroke:var(--g1);stroke-width:1.2px;filter:drop-shadow(0 0 5px rgba(61,255,122,.7))}
+.map-container svg .country.dimmed{opacity:.3}
+.map-container svg .graticule{fill:none;stroke:rgba(255,255,255,.04);stroke-width:.5px}
+.map-container svg .sphere{fill:#0a1510}
+.map-legend{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px;
+  font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+/* ── MULTI-SELECT PANEL ── */
+.ms-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:22px 26px;margin-bottom:22px}
+.ms-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.ms-title{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ms-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ms-btn{font-family:var(--mono);font-size:.65rem;letter-spacing:.06em;padding:5px 12px;
+  border-radius:99px;border:1px solid var(--border2);color:var(--muted);
+  cursor:pointer;background:transparent;transition:all .2s;text-transform:uppercase}
+.ms-btn:hover{border-color:var(--g1);color:var(--g1);background:rgba(61,255,122,.07)}
+.ms-search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:9px 13px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none;
+  margin-bottom:12px;transition:border-color .2s}
+.ms-search:focus{border-color:var(--g1)}
+.ms-list{display:flex;flex-wrap:wrap;gap:6px;max-height:220px;overflow-y:auto;padding:4px 0}
+.ms-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;
+  border:1px solid var(--border2);font-family:var(--mono);font-size:.68rem;cursor:pointer;
+  transition:all .18s;color:var(--muted);background:transparent;white-space:nowrap;user-select:none}
+.ms-chip:hover{border-color:var(--g1);color:var(--g1)}
+.ms-chip.sel{border-color:var(--g1);color:#07100a;background:var(--g1);font-weight:700}
+.ms-count{font-family:var(--mono);font-size:.7rem;color:var(--g4);margin-top:10px}
+.map-tooltip{position:fixed;background:rgba(7,16,10,.97);border:1px solid rgba(61,255,122,.25);
+  border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:.72rem;pointer-events:none;
+  z-index:9999;color:var(--text);line-height:1.8;transform:translate(-50%,-110%);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;min-width:160px;max-width:220px}
+</style>
+</head>
+<body>
+<div class="o1 orb"></div><div class="o2 orb"></div><div class="o3 orb"></div>
+
+<div class="wrap">
+
+<!-- ══ HEADER ══ -->
+<header>
+  <span class="logo-chip">🌿 EcoCalc v2.0</span>
+  <h1>Energía <em>Renovable</em><br>& Huella de IA</h1>
+  <p class="sub">Calcula tu consumo, compáralo con fuentes limpias, analiza la energía que consume la IA y explora datos históricos mundiales 1965–2022.</p>
+</header>
+
+<!-- ══ CALCULADORA ══ -->
+<div class="anim" style="margin-bottom:48px">
+  <div class="sec-label">01 // Calculadora de consumo</div>
+  <div class="card">
+    <div class="input-grid">
+      <div>
+        <label class="lbl" for="kwh">Consumo eléctrico (kWh)</label>
+        <input type="number" id="kwh" value="300" min="1" max="999999" placeholder="Ej: 300"/>
+      </div>
+      <div>
+        <label class="lbl" for="period">Periodo de medición</label>
+        <select id="period">
+          <option value="1">Diario</option>
+          <option value="30" selected>Mensual</option>
+          <option value="365">Anual</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-grid">
+      <div>
+        <label class="lbl">Horas de sol promedio / día</label>
+        <input type="range" id="sunH" min="2" max="12" value="5" step=".5"/>
+        <span class="rval" id="sunV">5 h/día</span>
+      </div>
+      <div>
+        <label class="lbl">Eficiencia panel solar (%)</label>
+        <input type="range" id="panEff" min="10" max="25" value="18" step="1"/>
+        <span class="rval" id="effV">18 %</span>
+      </div>
+    </div>
+    <button class="btn" onclick="calcular()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Calcular equivalentes renovables
+    </button>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div id="results">
+
+  <!-- KPI Cards -->
+  <div class="res-cards">
+    <div class="rc sol"><span class="ico">☀️</span><div class="rlbl">Solar</div><div class="rval2" id="r-solar">—</div><div class="runit">paneles 250 W</div><div class="rdesc">Paneles necesarios para cubrir tu consumo.</div></div>
+    <div class="rc win"><span class="ico">💨</span><div class="rlbl">Eólica</div><div class="rval2" id="r-wind">—</div><div class="runit">turbinas mini 1 kW</div><div class="rdesc">Turbinas equivalentes a tu demanda diaria.</div></div>
+    <div class="rc hyd"><span class="ico">💧</span><div class="rlbl">Hidráulica</div><div class="rval2" id="r-hydro">—</div><div class="runit">m³/día de agua</div><div class="rdesc">Caudal micro-central (caída 5 m, η=85%).</div></div>
+    <div class="rc bio"><span class="ico">🌱</span><div class="rlbl">Biomasa</div><div class="rval2" id="r-bio">—</div><div class="runit">kg biomasa/mes</div><div class="rdesc">Biomasa seca equivalente al consumo mensual.</div></div>
+  </div>
+
+  <!-- CO2 bar -->
+  <div class="co2-block" style="margin-bottom:36px">
+    <div class="co2-hdr">
+      <span class="lbl2">💨 CO₂ evitado vs. red convencional</span>
+      <span class="cval" id="r-co2">—</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="co2-bar"></div></div>
+    <div class="bar-leg"><span>0 kg</span><span id="bar-max">ref.</span></div>
+  </div>
+
+  <!-- ══ PLOT 1: 4 MÉTRICAS ══ -->
+  <div class="sec-label">02 // Comparación solar · eólica · hidráulica</div>
+
+  <div class="chart-full" style="margin-bottom:22px">
+    <div class="chart-title">Selecciona métrica a comparar</div>
+    <div class="tab-bar">
+      <span class="tab active" onclick="switchMetric(0,this)">⚡ Potencia necesaria (kW)</span>
+      <span class="tab" onclick="switchMetric(1,this)">🔢 Unidades físicas</span>
+      <span class="tab" onclick="switchMetric(2,this)">📊 Eficiencia relativa (%)</span>
+      <span class="tab" onclick="switchMetric(3,this)">💰 kWh por $ invertido</span>
+    </div>
+    <canvas id="barMetric" height="260"></canvas>
+  </div>
+
+  <div class="charts-2col" style="margin-bottom:36px">
+    <div class="chart-wrap">
+      <div class="chart-title">🕸 Radar multidimensional (las 4 métricas normalizadas)</div>
+      <canvas id="radarChart" height="260"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">🍩 Distribución de potencia instalada</div>
+      <canvas id="donutChart" height="260"></canvas>
+    </div>
+  </div>
+
+  <!-- ══ PANEL IA ══ -->
+  <div class="sec-label">03 // Energía consumida por IA</div>
+
+  <div class="ai-grid" style="margin-bottom:36px">
+    <!-- Consumo por modelo -->
+    <div class="ai-card">
+      <div class="ai-title">🤖 Consumo por consulta (Wh/query)</div>
+      <div id="ai-models"></div>
+    </div>
+
+    <!-- Input usuario + equivalencias -->
+    <div class="ai-card">
+      <div class="ai-title">📅 Tu consumo de IA hoy</div>
+      <div class="ai-input-row">
+        <label>Consultas/día:</label>
+        <input type="number" id="ai-queries" value="20" min="1" max="10000" oninput="updateAI()"/>
+        <label>Modelo:</label>
+        <select id="ai-model-sel" onchange="updateAI()" style="width:130px;padding:8px 10px;font-size:.78rem">
+          <option value="0.001">GPT-3.5</option>
+          <option value="0.003" selected>GPT-4 / Claude 3</option>
+          <option value="0.005">Claude 3 Opus</option>
+          <option value="0.007">Gemini Ultra</option>
+          <option value="0.0003">Gemini Flash</option>
+        </select>
+      </div>
+      <div class="ai-equiv" id="ai-equiv">—</div>
+    </div>
+
+    <!-- Comparativa electrodomésticos -->
+    <div class="ai-card" style="grid-column:1/-1">
+      <div class="ai-title">🏠 IA vs Electrodomésticos comunes (kWh/hora)</div>
+      <div class="appliance-list" id="appliance-list"></div>
+    </div>
+  </div>
+
+  <!-- tabla técnica -->
+  <div class="card-sm" style="margin-bottom:48px;overflow:hidden;padding:0">
+    <div style="padding:18px 24px 14px;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)">// Desglose técnico por fuente</div>
+    <div style="overflow-x:auto">
+    <table class="data-table">
+      <thead><tr><th>Fuente</th><th>Potencia (kW)</th><th>kWh totales</th><th>CO₂ evitado</th><th>Factor capacidad</th></tr></thead>
+      <tbody id="tabla-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+</div><!-- /results -->
+
+<!-- CSV DATOS HISTÓRICOS -->
+<div class="anim3">
+  <div class="sec-label">04 // Datos históricos mundiales de renovables 1965–2022</div>
+
+  <!-- DROP ZONE -->
+  <div class="csv-zone" id="csvZone">
+    <input type="file" id="csvFile" accept=".csv" onchange="loadCSV(this)"/>
+    <div class="csv-icon">📂</div>
+    <div class="csv-lbl">Arrastra tu archivo <span>.csv</span> aquí o haz clic para seleccionar</div>
+    <div class="csv-lbl" style="margin-top:4px;font-size:.65rem">Formato: Entity, Code, Year, Renewables (% equivalent primary energy)</div>
+    <div class="csv-status" id="csv-status"></div>
+  </div>
+
+  <div id="csv-results">
+    <div class="csv-controls">
+      <div>
+        <label class="lbl" style="margin-bottom:5px;display:block">Región / País</label>
+        <select id="csv-region" onchange="renderTimeline()"></select>
+      </div>
+      <div>
+        <label class="lbl" style="margin-bottom:5px;display:block">Comparar con</label>
+        <select id="csv-region2" onchange="renderTimeline()"></select>
+      </div>
+      <div>
+        <label class="lbl" style="margin-bottom:5px;display:block">Año (mapa calor)</label>
+        <select id="csv-year" onchange="renderHeatmap()"></select>
+      </div>
+    </div>
+
+    <!-- ══ SELECTOR MÚLTIPLE DE PAÍSES ══ -->
+    <div class="ms-panel">
+      <div class="ms-header">
+        <span class="ms-title">🌍 Seleccionar países / regiones para el mapa</span>
+        <div class="ms-actions">
+          <button class="ms-btn" onclick="selectTop(5)">Top 5</button>
+          <button class="ms-btn" onclick="selectTop(10)">Top 10</button>
+          <button class="ms-btn" onclick="selectTop(20)">Top 20</button>
+          <button class="ms-btn" onclick="selectAll()">Todos</button>
+          <button class="ms-btn" onclick="clearSelection()">Limpiar</button>
+        </div>
+      </div>
+      <input class="ms-search" id="ms-search" type="text" placeholder="Buscar país o región…" oninput="filterChips(this.value)"/>
+      <div class="ms-list" id="ms-list"></div>
+      <div class="ms-count" id="ms-count"></div>
+    </div>
+
+    <!-- ══ MAPA MUNDI ══ -->
+    <div class="map-container" style="margin-bottom:22px">
+      <div class="chart-title" style="margin-bottom:14px">🗺 Mapa mundial — % Energía Renovable
+        <span style="font-size:.65rem;margin-left:12px;color:var(--muted)">Año: <span id="map-year-label">—</span></span>
+      </div>
+      <div id="world-map-svg"></div>
+      <div class="map-legend">
+        <span><span class="dot" style="background:#1a2e1e"></span> Sin datos</span>
+        <span><span class="dot" style="background:#1a5c2a"></span> &lt;10%</span>
+        <span><span class="dot" style="background:#25a046"></span> 10–30%</span>
+        <span><span class="dot" style="background:#3dff7a"></span> 30–60%</span>
+        <span><span class="dot" style="background:#c2ff5e"></span> &gt;60%</span>
+        <span><span class="dot" style="background:rgba(255,228,94,.8)"></span> Seleccionado</span>
+      </div>
+    </div>
+    <div class="map-tooltip" id="map-tooltip"></div>
+
+    <!-- Timeline -->
+    <div class="chart-full" style="margin-bottom:22px">
+      <div class="chart-title">📈 Línea de tiempo — países seleccionados</div>
+      <canvas id="timelineChart" height="280"></canvas>
+    </div>
+
+    <!-- Heatmap -->
+    <div class="chart-full" style="margin-bottom:36px">
+      <div class="chart-title">🌡 Mapa de calor — Intensidad renovable por región y década</div>
+      <div id="heatmap-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<footer>EcoCalc v2.0 — Factores IPCC 2023 &nbsp;|&nbsp; Datos: Renewable Energy World Wide 1965~2022 &nbsp;|&nbsp; Hecho con 💚</footer>
+</div><!-- /wrap -->
+
+<script>
+/* ════════════════════════════════
+   CONSTANTS & STATE
+═══════════════════════════════════ */
+const C = {
+  CO2_GRID : 0.233,
+  PANEL_W  : 250,
+  WIND_CF  : 0.25,
+  TURBINE_KW:1,
+  HYDRO_EFF: 0.85,
+  GRAVITY  : 9.81,
+  WATER_DEN:1000,
+  HEAD     : 5,
+  BIO_KWH  : 4.2,
+  PANEL_COST_KWP:900,
+  WIND_COST_KW:1200,
+  HYDRO_COST_KW:2000,
+};
+
+let state = { kwh:300, kwhDay:10, panels:0, turbines:0, hydroKW:0, bioKg:0, co2:0 };
+let charts = {};
+let csvData = [];
+
+/* ════════════════════════════════
+   SLIDERS
+═══════════════════════════════════ */
+document.getElementById('sunH').addEventListener('input',e=>document.getElementById('sunV').textContent=e.target.value+' h/día');
+document.getElementById('panEff').addEventListener('input',e=>document.getElementById('effV').textContent=e.target.value+' %');
+
+/* ════════════════════════════════
+   ANIMATE NUMBER
+═══════════════════════════════════ */
+function animN(el,target,dec=1){
+  const dur=900; let t0=null;
+  const step=ts=>{
+    if(!t0)t0=ts;
+    const p=Math.min((ts-t0)/dur,1), e=1-Math.pow(1-p,3);
+    el.textContent=(target*e).toFixed(dec);
+    if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ════════════════════════════════
+   MAIN CALC
+═══════════════════════════════════ */
+function calcular(){
+  const kwh    = parseFloat(document.getElementById('kwh').value)||0;
+  const period = parseInt(document.getElementById('period').value);
+  const sun    = parseFloat(document.getElementById('sunH').value);
+  const eff    = parseFloat(document.getElementById('panEff').value)/100;
+  if(kwh<=0){alert('Ingresa un consumo válido');return;}
+
+  const kwhDay = kwh/period;
+  const energyPerPanel = (C.PANEL_W*sun*eff)/1000;
+  const panels = kwhDay/energyPerPanel;
+  const turbines = kwhDay/(C.TURBINE_KW*24*C.WIND_CF);
+  const P_hydro = kwhDay/24;
+  const Q = (P_hydro*1000)/(C.WATER_DEN*C.GRAVITY*C.HEAD*C.HYDRO_EFF);
+  const hydroM3 = Q*86400;
+  const bioKg   = (kwhDay*30)/C.BIO_KWH;
+  const co2     = kwh*C.CO2_GRID;
+
+  Object.assign(state,{kwh,kwhDay,panels,turbines,hydroKW:P_hydro,hydroM3,bioKg,co2,eff,sun,period});
+
+  // KPI
+  animN(document.getElementById('r-solar'),panels,1);
+  animN(document.getElementById('r-wind'),turbines,2);
+  animN(document.getElementById('r-hydro'),hydroM3,1);
+  animN(document.getElementById('r-bio'),bioKg,0);
+  document.getElementById('r-co2').textContent='—';
+  animN(document.getElementById('r-co2'),co2,1);
+  document.getElementById('r-co2').textContent = co2.toFixed(1)+' kg CO₂';
+
+  // CO2 bar
+  const maxCO2=1000, pct=Math.min(co2/maxCO2*100,100);
+  setTimeout(()=>document.getElementById('co2-bar').style.width=pct+'%',100);
+  document.getElementById('bar-max').textContent=`ref. ${maxCO2} kg`;
+
+  // Table
+  const rows=[
+    ['☀️ Solar',   panels.toFixed(1)+' paneles',       kwh.toFixed(0)+' kWh', co2.toFixed(1)+' kg CO₂','~20 %'],
+    ['💨 Eólica',  (turbines*C.TURBINE_KW).toFixed(2)+' kW', kwh.toFixed(0)+' kWh', co2.toFixed(1)+' kg CO₂','25 %'],
+    ['💧 Hidráulica',P_hydro.toFixed(2)+' kW',         kwh.toFixed(0)+' kWh', co2.toFixed(1)+' kg CO₂','40–90 %'],
+    ['🌱 Biomasa', (bioKg/30).toFixed(2)+' kg/día',    kwh.toFixed(0)+' kWh', co2.toFixed(1)+' kg CO₂','20–30 %'],
+  ];
+  document.getElementById('tabla-body').innerHTML=rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+
+  // Show results
+  const res=document.getElementById('results');
+  res.classList.add('visible');
+
+  // Draw charts
+  buildCharts();
+  updateAI();
+
+  setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+/* ════════════════════════════════
+   CHART BUILDERS
+═══════════════════════════════════ */
+const COLORS = {
+  sol: '#ffe45e', win: '#5eb8ff', hyd: '#5efff0',
+  solA:'rgba(255,228,94,.15)', winA:'rgba(94,184,255,.15)', hydA:'rgba(94,255,240,.15)'
+};
+
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+// ── METRIC 0: Potencia (kW)
+function metricData(idx){
+  const {panels,turbines,hydroKW,kwh,kwhDay} = state;
+  const totalP_solar  = (panels*C.PANEL_W)/1000;
+  const totalP_wind   = turbines*C.TURBINE_KW;
+  const totalP_hydro  = hydroKW;
+
+  const datasets = [
+    { label:'Solar ☀️', backgroundColor:COLORS.solA, borderColor:COLORS.sol, borderWidth:2 },
+    { label:'Eólica 💨', backgroundColor:COLORS.winA, borderColor:COLORS.win, borderWidth:2 },
+    { label:'Hidráulica 💧', backgroundColor:COLORS.hydA, borderColor:COLORS.hyd, borderWidth:2 },
+  ];
+
+  const configs = [
+    { labels:['Potencia instalada (kW)'], title:'Potencia necesaria (kW)',
+      vals:[totalP_solar.toFixed(2), totalP_wind.toFixed(2), totalP_hydro.toFixed(2)] },
+    { labels:['Unidades físicas'], title:'Unidades físicas equivalentes',
+      vals:[panels.toFixed(1), turbines.toFixed(2), (state.hydroM3/100).toFixed(2)] },
+    { labels:['Eficiencia relativa'], title:'Eficiencia energética relativa (%)',
+      vals:[state.eff*100, C.WIND_CF*100, 85] },
+    { labels:['kWh / $ invertido'], title:'Relación kWh por $ invertido (primer año)',
+      vals:[
+        (kwh/(totalP_solar*C.PANEL_COST_KWP)).toFixed(4),
+        (kwh/(totalP_wind*C.WIND_COST_KW)).toFixed(4),
+        (kwh/(totalP_hydro*C.HYDRO_COST_KW)).toFixed(4)
+      ]
+    },
+  ];
+  return configs[idx];
+}
+
+let currentMetric = 0;
+function switchMetric(idx,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentMetric=idx;
+  buildBarMetric(idx);
+}
+
+function buildBarMetric(idx){
+  destroyChart('barMetric');
+  const cfg = metricData(idx);
+  const ctx = document.getElementById('barMetric').getContext('2d');
+  charts.barMetric = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Solar ☀️','Eólica 💨','Hidráulica 💧'],
+      datasets:[{
+        label: cfg.title,
+        data: cfg.vals.map(Number),
+        backgroundColor:[COLORS.solA, COLORS.winA, COLORS.hydA],
+        borderColor:[COLORS.sol, COLORS.win, COLORS.hyd],
+        borderWidth:2, borderRadius:6, borderSkipped:false,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y}`}}},
+      scales:{
+        x:{ticks:{color:'#5a7a62',font:{family:"'Space Mono'",size:11}},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#5a7a62',font:{family:"'Space Mono'",size:10}},grid:{color:'rgba(255,255,255,.06)'},beginAtZero:true}
+      }
+    }
+  });
+}
+
+function buildRadar(){
+  destroyChart('radar');
+  // Normalize 4 metrics 0-100
+  const {panels,turbines,hydroKW} = state;
+  const P_s=(panels*C.PANEL_W)/1000, P_w=turbines, P_h=hydroKW;
+  const maxP=Math.max(P_s,P_w,P_h)||1;
+  const norm=(v,mx)=>Math.min((v/mx)*100,100);
+  const data = {
+    labels:['Potencia\n(kW)','Unidades\nfísicas','Eficiencia\n(%)','kWh/$'],
+    datasets:[
+      { label:'Solar ☀️',   data:[norm(P_s,maxP), norm(panels,Math.max(panels,turbines)*2), state.eff*100/25*100, 70], borderColor:COLORS.sol, backgroundColor:COLORS.solA, pointBackgroundColor:COLORS.sol, borderWidth:2},
+      { label:'Eólica 💨',  data:[norm(P_w,maxP), norm(turbines,Math.max(panels,turbines)*2), C.WIND_CF*100/85*100, 55], borderColor:COLORS.win, backgroundColor:COLORS.winA, pointBackgroundColor:COLORS.win, borderWidth:2},
+      { label:'Hidráulica 💧',data:[norm(P_h,maxP),20, 100, 40], borderColor:COLORS.hyd, backgroundColor:COLORS.hydA, pointBackgroundColor:COLORS.hyd, borderWidth:2},
+    ]
+  };
+  const ctx=document.getElementById('radarChart').getContext('2d');
+  charts.radar=new Chart(ctx,{type:'radar',data,options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#e4f0e7',font:{family:"'Space Mono'",size:10}}}},
+    scales:{r:{ticks:{display:false,backdropColor:'transparent'},grid:{color:'rgba(255,255,255,.08)'},
+      pointLabels:{color:'#5a7a62',font:{family:"'Space Mono'",size:9}},angleLines:{color:'rgba(255,255,255,.06)'},suggestedMin:0,suggestedMax:100}}}
+  });
+}
+
+function buildDonut(){
+  destroyChart('donut');
+  const {panels,turbines,hydroKW} = state;
+  const P_s=(panels*C.PANEL_W)/1000, P_w=turbines, P_h=hydroKW;
+  const total=P_s+P_w+P_h||1;
+  const ctx=document.getElementById('donutChart').getContext('2d');
+  charts.donut=new Chart(ctx,{type:'doughnut',
+    data:{
+      labels:['Solar ☀️','Eólica 💨','Hidráulica 💧'],
+      datasets:[{data:[(P_s/total*100).toFixed(1),(P_w/total*100).toFixed(1),(P_h/total*100).toFixed(1)],
+        backgroundColor:[COLORS.solA,COLORS.winA,COLORS.hydA],
+        borderColor:[COLORS.sol,COLORS.win,COLORS.hyd],borderWidth:2,hoverOffset:8}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',
+      plugins:{legend:{labels:{color:'#e4f0e7',font:{family:"'Space Mono'",size:10}}},
+        tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed}%`}}}
+    }
+  });
+}
+
+function buildCharts(){
+  buildBarMetric(currentMetric);
+  buildRadar();
+  buildDonut();
+}
+
+/* ════════════════════════════════
+   AI PANEL:  Diferentes IA's y equivalencias
+═══════════════════════════════════ */
+const AI_MODELS = [
+  {name:'GPT-3.5',     wh:0.001,  color:'#a78bfa'},
+  {name:'GPT-4o',      wh:0.003,  color:'#fb923c'},
+  {name:'Claude 3 Sonnet', wh:0.003, color:'#3dff7a'},
+  {name:'Claude 3 Opus',   wh:0.005, color:'#c2ff5e'},
+  {name:'Gemini Flash',    wh:0.0003,color:'#5eb8ff'},
+  {name:'Gemini Ultra',    wh:0.007, color:'#ffe45e'},
+];
+const APPLIANCES = [
+  {name:'Bombilla LED',       kwh:0.009},
+  {name:'Laptop',             kwh:0.05},
+  {name:'TV 55"',             kwh:0.1},
+  {name:'Refrigerador',       kwh:0.15},
+  {name:'Lavadora',           kwh:0.5},
+  {name:'Aire acondicionado', kwh:1.5},
+  {name:'1 consulta IA (GPT-4)',kwh:0.000003},
+];
+
+function initAIPanel(){
+  const maxWh = Math.max(...AI_MODELS.map(m=>m.wh));
+  document.getElementById('ai-models').innerHTML = AI_MODELS.map(m=>`
+    <div class="ai-row">
+      <span class="ai-name">${m.name}</span>
+      <div class="ai-bar"><div class="ai-fill" style="width:${(m.wh/maxWh*100).toFixed(0)}%;background:${m.color}"></div></div>
+      <span class="ai-kwh">${m.wh*1000} mWh</span>
+    </div>`).join('');
+
+  const maxApp = Math.max(...APPLIANCES.map(a=>a.kwh));
+  document.getElementById('appliance-list').innerHTML = APPLIANCES.map(a=>`
+    <div class="app-row">
+      <span class="app-name">${a.name}</span>
+      <div class="app-b"><div class="app-f" style="width:${(a.kwh/maxApp*100).toFixed(1)}%"></div></div>
+      <span class="app-val">${a.kwh>=1?a.kwh.toFixed(2)+' kWh':a.kwh>=0.001?(a.kwh*1000).toFixed(1)+' Wh':(a.kwh*1e6).toFixed(0)+' mWh'}</span>
+    </div>`).join('');
+}
+
+function updateAI(){
+  const q = parseFloat(document.getElementById('ai-queries').value)||0;
+  const wh = parseFloat(document.getElementById('ai-model-sel').value)||0.003;
+  const totalKwh = q * wh / 1000;
+  const monthKwh = totalKwh * 30;
+  const yearKwh  = totalKwh * 365;
+
+  // Equivalences
+  const bulbHours = (totalKwh/0.009).toFixed(1);
+  const laptopMin = (totalKwh/0.05*60).toFixed(0);
+  const co2Daily  = (totalKwh*C.CO2_GRID*1000).toFixed(2);
+  const co2Year   = (yearKwh*C.CO2_GRID).toFixed(2);
+
+  document.getElementById('ai-equiv').innerHTML = `
+    <span>📅 Consumo diario:</span> <span>${(totalKwh*1000).toFixed(2)} Wh</span><br>
+    <span>📆 Mensual:</span> <span>${monthKwh.toFixed(4)} kWh</span><br>
+    <span>📅 Anual:</span> <span>${yearKwh.toFixed(3)} kWh</span><br>
+    <span>💡 Equivale a encender una bombilla LED:</span> <span>${bulbHours} h</span><br>
+    <span>💻 O usar una laptop:</span> <span>${laptopMin} min</span><br>
+    <span>🌿 CO₂ diario:</span> <span>${co2Daily} g CO₂</span><br>
+    <span>🌍 CO₂ anual:</span> <span>${co2Year} kg CO₂</span>
+  `.replace(/<span>/g,'<span style="color:var(--muted)">').replace(/<span style="color:var\(--muted\)">([^<]*)<\/span>\s*<br>/g, (m,p1)=>m).replace(/(<span style="color:var\(--muted\)">[^<]*<\/span>)\s*(<span>)/g,'$1 $2');
+
+  // Reformat cleanly
+  document.getElementById('ai-equiv').innerHTML = `
+    <div>📅 Consumo diario: <span>${(totalKwh*1000).toFixed(2)} Wh</span></div>
+    <div>📆 Mensual: <span>${monthKwh.toFixed(4)} kWh</span></div>
+    <div>📅 Anual: <span>${yearKwh.toFixed(3)} kWh</span></div>
+    <div>💡 Equivale a bombilla LED: <span>${bulbHours} h</span></div>
+    <div>💻 O laptop encendida: <span>${laptopMin} min</span></div>
+    <div>🌿 CO₂ diario: <span>${co2Daily} g CO₂</span></div>
+    <div>🌍 CO₂ anual: <span>${co2Year} kg CO₂</span></div>
+  `;
+}
+
+/* ════════════════════════════════
+   CSV LOAD & PARSE
+═══════════════════════════════════ */
+// Drag & drop
+const csvZone = document.getElementById('csvZone');
+csvZone.addEventListener('dragover', e=>{e.preventDefault();csvZone.classList.add('drag')});
+csvZone.addEventListener('dragleave',()=>csvZone.classList.remove('drag'));
+csvZone.addEventListener('drop',e=>{
+  e.preventDefault(); csvZone.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.name.endsWith('.csv')) processCSV(f);
+});
+
+function loadCSV(input){
+  const f=input.files[0];
+  if(f) processCSV(f);
+}
+
+function processCSV(file){
+  const status = document.getElementById('csv-status');
+  status.textContent = '⏳ Procesando ' + file.name + '…';
+
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    trimHeaders: true,
+    complete: function(res){
+      if(!res.data.length){
+        status.textContent = '❌ El archivo está vacío o no tiene formato válido.';
+        return;
+      }
+
+      // ── Detectar columnas exactas del dataset ──────────────────────────
+      // Formato esperado: Entity, Code, Year, Renewables (% equivalent primary energy)
+      const headers = Object.keys(res.data[0]);
+
+      // col0 = nombre del país/región → buscar "Entity" o fallback a primera columna
+      const col0 = headers.find(h => /entity|country|region|pais|pa[íi]s/i.test(h)) || headers[0];
+
+      // colY = año → buscar "Year" o columna con valores numéricos ~1900-2100
+      const colY = headers.find(h => /^year$/i.test(h))
+        || headers.find(h => /year|año|date/i.test(h))
+        || headers.find(h => {
+             const sample = res.data.slice(0,5).map(r=>+r[h]).filter(v=>v>1900&&v<2200);
+             return sample.length >= 3;
+           })
+        || headers[2];
+
+      // colV = valor numérico de renovables → buscar columna con "renew" o numérica
+      const colV = headers.find(h => /renew/i.test(h))
+        || headers.find(h => /energy|energ[ií]a|percent|%/i.test(h))
+        || headers.find(h => {
+             const sample = res.data.slice(0,10).map(r=>parseFloat(r[h])).filter(v=>!isNaN(v));
+             return sample.length >= 5;
+           })
+        || headers[3] || headers[2];
+
+      // Guardar y limpiar datos: solo filas con país, año y valor numérico válidos
+      csvData = res.data
+        .map(row => ({
+          entity : (row[col0]||'').trim(),
+          year   : parseInt(row[colY]),
+          value  : parseFloat(row[colV]),
+          code   : (row['Code']||row['code']||'').trim()
+        }))
+        .filter(r => r.entity && !isNaN(r.year) && !isNaN(r.value));
+
+      if(!csvData.length){
+        status.textContent = '❌ No se encontraron datos válidos. Revisa el formato del CSV.';
+        return;
+      }
+
+      const uniqueEntities = [...new Set(csvData.map(r=>r.entity))].length;
+      const yearRange = [Math.min(...csvData.map(r=>r.year)), Math.max(...csvData.map(r=>r.year))];
+
+      status.innerHTML = `
+        ✅ <strong>${csvData.length.toLocaleString()}</strong> filas cargadas —
+        <strong>${uniqueEntities}</strong> regiones/países —
+        años <strong>${yearRange[0]}–${yearRange[1]}</strong><br>
+        <span style="color:var(--muted);font-size:.65rem">
+          Columnas detectadas → País: <em>${col0}</em> | Año: <em>${colY}</em> | Valor: <em>${colV}</em>
+        </span>`;
+
+      setupCSVControls();
+      document.getElementById('csv-results').classList.add('visible');
+    },
+    error: (err) => {
+      status.textContent = '❌ Error al leer el archivo: ' + (err.message||err);
+    }
+  });
+}
+
+function setupCSVControls(){
+  if(!csvData.length) return;
+
+  // csvData ya está normalizado: [{entity, year, value, code}, ...]
+  const entities = [...new Set(csvData.map(r=>r.entity))].sort();
+  const years    = [...new Set(csvData.map(r=>r.year))].sort((a,b)=>a-b);
+
+  const rSel  = document.getElementById('csv-region');
+  const r2Sel = document.getElementById('csv-region2');
+  const ySel  = document.getElementById('csv-year');
+
+  rSel.innerHTML  = entities.map(e=>`<option value="${e}">${e}</option>`).join('');
+  r2Sel.innerHTML = `<option value="">— Ninguno —</option>` +
+                    entities.map(e=>`<option value="${e}">${e}</option>`).join('');
+  ySel.innerHTML  = years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  ySel.value      = years[years.length-1];
+
+  // Preseleccionar regiones de ejemplo si existen
+  const defaults = ['World','Africa','Asia','Europe','Americas'];
+  const found = defaults.find(d => entities.includes(d));
+  if(found) rSel.value = found;
+  const found2 = defaults.find(d => entities.includes(d) && d !== rSel.value);
+  if(found2) r2Sel.value = found2;
+
+  initChips(entities);
+  renderTimeline();
+  renderHeatmap();
+}
+
+
+/* ── HEATMAP ── */
+function renderHeatmap(){
+  if(!csvData.length) return;
+
+  // csvData normalizado: [{entity, year, value}]
+  const entities = [...new Set(csvData.map(r => r.entity))].sort().slice(0, 35);
+  const decades  = [...new Set(csvData.map(r => Math.floor(r.year/10)*10))].sort();
+
+  // Construir matriz entity x década → promedio de value
+  const matrix = {};
+  csvData.forEach(row => {
+    const dec = Math.floor(row.year/10)*10;
+    if(!matrix[row.entity]) matrix[row.entity] = {};
+    if(!matrix[row.entity][dec]) matrix[row.entity][dec] = [];
+    matrix[row.entity][dec].push(row.value);
+  });
+
+  // Valor máximo para escala de color
+  let maxVal = 0;
+  entities.forEach(e => decades.forEach(d => {
+    const arr = matrix[e]?.[d];
+    if(arr){ const avg = arr.reduce((a,b)=>a+b,0)/arr.length; if(avg>maxVal) maxVal=avg; }
+  }));
+
+  // Escala de color oscuro → verde brillante
+  const heatColor = val => {
+    if(!maxVal || !val) return 'rgba(255,255,255,.03)';
+    const t = Math.pow(val/maxVal, .45);
+    return `rgba(${Math.round(7+t*48)},${Math.round(16+t*223)},${Math.round(10+t*90)},${(.12+t*.82).toFixed(2)})`;
+  };
+
+  // Detectar unidad
+  const allVals = csvData.map(r=>r.value).filter(v=>!isNaN(v));
+  const unit = Math.max(...allVals) <= 100 ? '%' : '';
+
+  const wrap = document.getElementById('heatmap-wrap');
+  wrap.innerHTML = '';
+  const tbl = document.createElement('table');
+  tbl.className = 'heatmap-table';
+
+  // Encabezado
+  const thead = document.createElement('thead');
+  const hr    = document.createElement('tr');
+  hr.innerHTML = '<th>País / Región</th>' + decades.map(d=>`<th>${d}s</th>`).join('');
+  thead.appendChild(hr); tbl.appendChild(thead);
+
+  // Cuerpo
+  const tbody = document.createElement('tbody');
+  entities.forEach(ent => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="hm-label">${ent}</td>`;
+    decades.forEach(dec => {
+      const arr = matrix[ent]?.[dec];
+      const avg = arr ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+      const td  = document.createElement('td');
+      td.style.background = heatColor(avg);
+      td.title = `${ent} | ${dec}s: ${avg.toFixed(2)}${unit}`;
+      td.textContent = avg > 0 ? avg.toFixed(1) : '';
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+  wrap.appendChild(tbl);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   WORLD MAP — SVG simplificado + lógica de selección y coloreo
+════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════
+   MAPA MUNDI — D3 + TopoJSON (Natural Earth 110m, geometría real)
+   Lógica de selección compatible con chips y timeline
+════════════════════════════════════════════════════════════════ */
+
+/* ── Paleta de líneas para timeline (hasta 20) ── */
+const LINE_PALETTE = [
+  '#3dff7a','#ffe45e','#5eb8ff','#ff7eb3','#c2ff5e',
+  '#ff9d5e','#d4aaff','#5efff0','#ff5e5e','#aaffdd',
+  '#ffdd5e','#87b8ff','#ff5eb8','#b8ff5e','#5effb8',
+  '#ffa05e','#b05eff','#5effff','#ff5e70','#5effc2'
+];
+
+/* ── Nombre CSV → ISO-A2 ── */
+const NAME_TO_ISO = {
+  "Afghanistan":"AF","Albania":"AL","Algeria":"DZ","Angola":"AO","Argentina":"AR",
+  "Armenia":"AM","Australia":"AU","Austria":"AT","Azerbaijan":"AZ","Bangladesh":"BD",
+  "Belarus":"BY","Belgium":"BE","Benin":"BJ","Bolivia":"BO","Bosnia and Herzegovina":"BA",
+  "Botswana":"BW","Brazil":"BR","Bulgaria":"BG","Burkina Faso":"BF","Cambodia":"KH",
+  "Cameroon":"CM","Canada":"CA","Chad":"TD","Chile":"CL","China":"CN","Colombia":"CO",
+  "Congo":"CG","Costa Rica":"CR","Croatia":"HR","Cuba":"CU","Cyprus":"CY",
+  "Czechia":"CZ","Czech Republic":"CZ","Denmark":"DK","Dominican Republic":"DO",
+  "Ecuador":"EC","Egypt":"EG","El Salvador":"SV","Estonia":"EE","Ethiopia":"ET",
+  "Finland":"FI","France":"FR","Gabon":"GA","Georgia":"GE","Germany":"DE","Ghana":"GH",
+  "Greece":"GR","Guatemala":"GT","Haiti":"HT","Honduras":"HN","Hungary":"HU",
+  "India":"IN","Indonesia":"ID","Iran":"IR","Iraq":"IQ","Ireland":"IE","Israel":"IL",
+  "Italy":"IT","Jamaica":"JM","Japan":"JP","Jordan":"JO","Kazakhstan":"KZ","Kenya":"KE",
+  "Kuwait":"KW","Laos":"LA","Latvia":"LV","Lebanon":"LB","Libya":"LY","Lithuania":"LT",
+  "Luxembourg":"LU","Madagascar":"MG","Malaysia":"MY","Mali":"ML","Mexico":"MX",
+  "Moldova":"MD","Mongolia":"MN","Morocco":"MA","Mozambique":"MZ","Myanmar":"MM",
+  "Namibia":"NA","Nepal":"NP","Netherlands":"NL","New Zealand":"NZ","Nicaragua":"NI",
+  "Niger":"NE","Nigeria":"NG","North Korea":"KP","Norway":"NO","Oman":"OM",
+  "Pakistan":"PK","Panama":"PA","Paraguay":"PY","Peru":"PE","Philippines":"PH",
+  "Poland":"PL","Portugal":"PT","Qatar":"QA","Romania":"RO","Russia":"RU",
+  "Rwanda":"RW","Saudi Arabia":"SA","Senegal":"SN","Serbia":"RS","Slovakia":"SK",
+  "Slovenia":"SI","South Africa":"ZA","South Korea":"KR","South Sudan":"SS","Spain":"ES",
+  "Sri Lanka":"LK","Sudan":"SD","Sweden":"SE","Switzerland":"CH","Syria":"SY",
+  "Taiwan":"TW","Tanzania":"TZ","Thailand":"TH","Tunisia":"TN","Turkey":"TR",
+  "Turkmenistan":"TM","Uganda":"UG","Ukraine":"UA","United Arab Emirates":"AE",
+  "United Kingdom":"GB","United States":"US","Uruguay":"UY","Uzbekistan":"UZ",
+  "Venezuela":"VE","Vietnam":"VN","Yemen":"YE","Zambia":"ZM","Zimbabwe":"ZW",
+  "Democratic Republic of Congo":"CD","North Macedonia":"MK",
+  "Papua New Guinea":"PG","Ivory Coast":"CI","Cote d'Ivoire":"CI",
+  "Eritrea":"ER","Somalia":"SO","Mauritania":"MR","Guinea":"GN","Sierra Leone":"SL",
+  "Liberia":"LR","Togo":"TG","Burundi":"BI","Malawi":"MW","Equatorial Guinea":"GQ",
+  "Guinea-Bissau":"GW","Gambia":"GM","Central African Republic":"CF","Djibouti":"DJ",
+  "Kyrgyzstan":"KG","Tajikistan":"TJ","Bhutan":"BT","Maldives":"MV",
+  "Singapore":"SG","Timor-Leste":"TL","East Timor":"TL",
+  "Eswatini":"SZ","Swaziland":"SZ","Lesotho":"LS","Comoros":"KM",
+  "Trinidad and Tobago":"TT","Suriname":"SR","Guyana":"GY","Iceland":"IS","Montenegro":"ME",
+  "Kosovo":"XK","Moldova":"MD","Cyprus":"CY",
+  "World":"_WORLD","Africa":"_REG","Asia":"_REG","Europe":"_REG","Americas":"_REG",
+  "Oceania":"_REG","European Union":"_REG","High-income countries":"_REG",
+  "Low-income countries":"_REG","Middle-income countries":"_REG",
+  "Upper-middle-income countries":"_REG","Lower-middle-income countries":"_REG",
+  "North America":"_REG","South America":"_REG","Central America":"_REG",
+  "Sub-Saharan Africa":"_REG","Middle East":"_REG","East Asia":"_REG",
+  "Southeast Asia":"_REG","South Asia":"_REG","Central Asia":"_REG",
+  "Eastern Europe":"_REG","Western Europe":"_REG","Northern Europe":"_REG",
+  "Southern Europe":"_REG","Caribbean":"_REG","Pacific":"_REG",
+  "OECD":"_REG","Non-OECD":"_REG","G20":"_REG","G7":"_REG"
+};
+
+/* ── ISO numérico (Natural Earth 110m) → ISO-A2 ── */
+const NUM_TO_ISO2 = {
+  4:"AF",8:"AL",12:"DZ",24:"AO",32:"AR",36:"AU",40:"AT",31:"AZ",50:"BD",
+  112:"BY",56:"BE",64:"BT",68:"BO",70:"BA",72:"BW",76:"BR",100:"BG",
+  104:"MM",108:"BI",116:"KH",120:"CM",124:"CA",140:"CF",144:"LK",152:"CL",
+  156:"CN",170:"CO",180:"CD",178:"CG",188:"CR",191:"HR",192:"CU",196:"CY",
+  203:"CZ",208:"DK",214:"DO",218:"EC",818:"EG",222:"SV",232:"ER",231:"ET",
+  246:"FI",250:"FR",266:"GA",268:"GE",276:"DE",288:"GH",300:"GR",320:"GT",
+  324:"GN",332:"HT",340:"HN",348:"HU",356:"IN",360:"ID",364:"IR",368:"IQ",
+  372:"IE",376:"IL",380:"IT",388:"JM",392:"JP",400:"JO",398:"KZ",404:"KE",
+  408:"KP",410:"KR",414:"KW",418:"LA",428:"LV",422:"LB",434:"LY",440:"LT",
+  442:"LU",450:"MG",458:"MY",466:"ML",484:"MX",498:"MD",496:"MN",504:"MA",
+  508:"MZ",516:"NA",524:"NP",528:"NL",554:"NZ",558:"NI",562:"NE",566:"NG",
+  578:"NO",512:"OM",586:"PK",591:"PA",600:"PY",604:"PE",608:"PH",616:"PL",
+  620:"PT",634:"QA",642:"RO",643:"RU",646:"RW",682:"SA",686:"SN",688:"RS",
+  703:"SK",705:"SI",706:"SO",710:"ZA",724:"ES",729:"SD",752:"SE",756:"CH",
+  760:"SY",834:"TZ",764:"TH",768:"TG",788:"TN",792:"TR",800:"UG",804:"UA",
+  784:"AE",826:"GB",840:"US",858:"UY",860:"UZ",862:"VE",704:"VN",887:"YE",
+  894:"ZM",716:"ZW",262:"DJ",320:"GT",454:"MW",686:"SN",328:"GY",740:"SR",
+  626:"TL",624:"GW",270:"GM",226:"GQ",174:"KM",132:"CV",690:"SC",480:"MU",
+  748:"SZ",426:"LS",417:"KG",762:"TJ",702:"SG",598:"PG",352:"IS",499:"ME",
+  807:"MK",204:"BJ",854:"BF",694:"SL",430:"LR",108:"BI",232:"ER"
+};
+
+/* ── Estado ── */
+let selectedCountries = new Set();
+let allEntities       = [];
+let _topoData         = null;
+let _currentValMap    = {};
+
+/* ── Cargar TopoJSON (Natural Earth 110m) ── */
+(async function loadTopo(){
+  try {
+    const r = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    _topoData = await r.json();
+    console.log('TopoJSON cargado OK');
+  } catch(e){ console.warn('TopoJSON error',e); }
+})();
+
+/* ── Escala de color ── */
+function renewColor(pct, isSel){
+  const base = (pct === undefined || pct === null || isNaN(pct));
+  if(base && !isSel) return '#162a1a';
+  if(base &&  isSel) return '#1e4a28';
+  if(pct < 5)  return isSel ? '#174520' : '#112010';
+  if(pct < 10) return isSel ? '#1a6030' : '#174a1e';
+  if(pct < 20) return isSel ? '#1a8538' : '#1a7530';
+  if(pct < 30) return isSel ? '#22b548' : '#22a040';
+  if(pct < 45) return isSel ? '#33e065' : '#2dcf5a';
+  if(pct < 60) return '#3dff7a';
+  return '#c2ff5e';
+}
+
+/* ── Render mapa con D3 ── */
+function renderWorldMap(valMap){
+  _currentValMap = valMap || {};
+  const wrap = document.getElementById('world-map-svg');
+  if(!wrap) return;
+
+  if(!_topoData){
+    if(!wrap.querySelector('.map-loading')){
+      wrap.innerHTML = '<div class="map-loading" style="text-align:center;padding:48px;font-family:var(--mono);color:var(--muted);font-size:.78rem">⏳ Cargando mapa mundial…</div>';
+    }
+    setTimeout(() => renderWorldMap(valMap), 600);
+    return;
+  }
+
+  /* Construir lookup ISO2 → entidad del CSV */
+  const iso2ToEntity = {};
+  allEntities.forEach(e => {
+    const iso = NAME_TO_ISO[e];
+    if(iso && iso !== '_REG' && iso !== '_WORLD') iso2ToEntity[iso] = e;
+  });
+
+  const W = wrap.clientWidth || 900;
+  const H = Math.round(W * 0.5);
+
+  const projection = d3.geoNaturalEarth1()
+    .scale(W / 6.3)
+    .translate([W / 2, H / 2]);
+
+  const pathGen = d3.geoPath().projection(projection);
+
+  /* Si ya existe SVG, solo recolorear ── */
+  const existingSVG = wrap.querySelector('svg');
+  if(existingSVG){
+    _colorD3Paths(existingSVG, iso2ToEntity, valMap);
+    return;
+  }
+
+  /* Crear SVG ── */
+  wrap.innerHTML = '';
+  const svg = d3.select(wrap).append('svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('width', '100%')
+    .attr('height', 'auto');
+
+  /* Océano */
+  svg.append('path')
+    .datum({type:'Sphere'})
+    .attr('fill','#0a1510')
+    .attr('d', pathGen);
+
+  /* Graticule */
+  svg.append('path')
+    .datum(d3.geoGraticule()())
+    .attr('fill','none')
+    .attr('stroke','rgba(255,255,255,.04)')
+    .attr('stroke-width','.5')
+    .attr('d', pathGen);
+
+  /* Países */
+  const countries = topojson.feature(_topoData, _topoData.objects.countries);
+
+  svg.selectAll('.country')
+    .data(countries.features)
+    .enter().append('path')
+    .attr('class', 'country')
+    .attr('d', pathGen)
+    .attr('stroke', '#0a150c')
+    .attr('stroke-width', '.4')
+    .style('cursor', 'pointer')
+    .style('transition', 'fill .3s')
+    .on('mousemove', function(event, d){
+      const iso2   = NUM_TO_ISO2[+d.id];
+      const entity = iso2 ? iso2ToEntity[iso2] : null;
+      const val    = entity ? _currentValMap[entity] : undefined;
+      const isSel  = entity ? selectedCountries.has(entity) : false;
+      _showTooltip(event, entity || iso2 || '—', val, isSel);
+    })
+    .on('mouseleave', _hideTooltip)
+    .on('click', function(event, d){
+      const iso2   = NUM_TO_ISO2[+d.id];
+      const entity = iso2 ? iso2ToEntity[iso2] : null;
+      if(!entity) return;
+      if(selectedCountries.has(entity)) selectedCountries.delete(entity);
+      else selectedCountries.add(entity);
+      _updateChipStyles();
+      updateCount();
+      _colorD3Paths(wrap.querySelector('svg'), iso2ToEntity, _currentValMap);
+      renderTimeline();
+    });
+
+  /* Bordes entre países */
+  svg.append('path')
+    .datum(topojson.mesh(_topoData, _topoData.objects.countries, (a,b) => a !== b))
+    .attr('fill', 'none')
+    .attr('stroke', 'rgba(0,0,0,.4)')
+    .attr('stroke-width', '.3')
+    .attr('d', pathGen);
+
+  _colorD3Paths(svg.node(), iso2ToEntity, valMap);
+}
+
+/* ── Colorear paths existentes ── */
+function _colorD3Paths(svgEl, iso2ToEntity, valMap){
+  d3.select(svgEl).selectAll('.country').each(function(d){
+    const iso2   = NUM_TO_ISO2[+d.id];
+    const entity = iso2 ? iso2ToEntity[iso2] : null;
+    const val    = entity ? valMap[entity] : undefined;
+    const isSel  = !!(entity && selectedCountries.has(entity));
+    const inData = !!entity;
+
+    d3.select(this)
+      .attr('fill', renewColor(val, isSel))
+      .attr('opacity', (!isSel && selectedCountries.size > 0 && inData) ? 0.35 : 1)
+      .attr('stroke', isSel ? 'var(--g1)' : '#0a150c')
+      .attr('stroke-width', isSel ? '1' : '.4')
+      .style('filter', isSel ? 'drop-shadow(0 0 4px rgba(61,255,122,.6))' : 'none');
+  });
+}
+
+/* ── Tooltip ── */
+function _showTooltip(event, label, val, isSel){
+  const tt = document.getElementById('map-tooltip');
+  if(!tt) return;
+  tt.innerHTML = `<strong style="color:var(--g1)">${label}</strong><br>
+    ${val !== undefined && !isNaN(val)
+      ? `🌿 Renovable: <span style="color:var(--g4)">${val.toFixed(2)}%</span>`
+      : '<span style="color:var(--muted)">Sin datos este año</span>'}<br>
+    <span style="color:var(--muted);font-size:.65rem">${isSel ? '✅ Seleccionado' : label !== '—' ? 'Clic para seleccionar' : ''}</span>`;
+  tt.style.display = 'block';
+  tt.style.left    = event.clientX + 'px';
+  tt.style.top     = event.clientY + 'px';
+}
+function _hideTooltip(){
+  const tt = document.getElementById('map-tooltip');
+  if(tt) tt.style.display = 'none';
+}
+
+/* ── updateMapYear: llamado al cambiar año ── */
+function updateMapYear(){
+  const ySel = document.getElementById('csv-year');
+  const year = ySel ? parseInt(ySel.value) : null;
+  const lbl  = document.getElementById('map-year-label');
+  if(lbl) lbl.textContent = year || '—';
+
+  const valMap = {};
+  if(year) csvData.filter(r => r.year === year).forEach(r => { valMap[r.entity] = r.value; });
+
+  /* Si SVG ya existe, solo recolorear; si no, construir */
+  const wrap   = document.getElementById('world-map-svg');
+  const svgEl  = wrap ? wrap.querySelector('svg') : null;
+  if(svgEl && _topoData){
+    const iso2ToEntity = {};
+    allEntities.forEach(e => {
+      const iso = NAME_TO_ISO[e];
+      if(iso && iso !== '_REG' && iso !== '_WORLD') iso2ToEntity[iso] = e;
+    });
+    _currentValMap = valMap;
+    _colorD3Paths(svgEl, iso2ToEntity, valMap);
+    const lbl2 = document.getElementById('map-year-label');
+    if(lbl2) lbl2.textContent = year || '—';
+  } else {
+    renderWorldMap(valMap);
+  }
+}
+
+document.addEventListener('change', e => {
+  if(e.target && e.target.id === 'csv-year') updateMapYear();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   CHIPS — selección múltiple de países/regiones
+════════════════════════════════════════════════════════════════ */
+function initChips(entities){
+  allEntities = entities;
+  selectedCountries.clear();
+  /* Preseleccionar hasta 8 países reales (con ISO-A2 válido) */
+  let count = 0;
+  for(const e of entities){
+    const iso = NAME_TO_ISO[e];
+    if(iso && iso !== '_REG' && iso !== '_WORLD' && count < 8){
+      selectedCountries.add(e); count++;
+    }
+  }
+  renderChips(entities);
+  updateMapYear();
+}
+
+function renderChips(entities){
+  const list = document.getElementById('ms-list');
+  if(!list) return;
+  list.innerHTML = entities.map(e => {
+    const iso      = NAME_TO_ISO[e];
+    const isRegion = !iso || iso === '_REG' || iso === '_WORLD';
+    const sel      = selectedCountries.has(e);
+    return `<span class="ms-chip${sel?' sel':''}" data-entity="${e.replace(/"/g,'&quot;')}"
+              onclick="toggleChip(this,'${e.replace(/'/g,"\\'")}')">
+              ${isRegion ? '🌐' : '🏳'} ${e}
+            </span>`;
+  }).join('');
+  updateCount();
+}
+
+function filterChips(q){
+  const filtered = q.trim()
+    ? allEntities.filter(e => e.toLowerCase().includes(q.toLowerCase()))
+    : allEntities;
+  renderChips(filtered);
+}
+
+function toggleChip(el, entity){
+  if(selectedCountries.has(entity)) selectedCountries.delete(entity);
+  else selectedCountries.add(entity);
+  el.classList.toggle('sel', selectedCountries.has(entity));
+  updateCount();
+  updateMapYear();
+  renderTimeline();
+}
+
+function updateCount(){
+  const el = document.getElementById('ms-count');
+  if(el) el.textContent =
+    `${selectedCountries.size} seleccionado${selectedCountries.size!==1?'s':''} de ${allEntities.length} disponibles`;
+}
+
+function _updateChipStyles(){
+  document.querySelectorAll('.ms-chip').forEach(chip => {
+    const ent = chip.getAttribute('data-entity');
+    chip.classList.toggle('sel', selectedCountries.has(ent));
+  });
+}
+
+function selectTop(n){
+  const avgs = allEntities.map(e => {
+    const vals = csvData.filter(r => r.entity === e).map(r => r.value).filter(v => !isNaN(v));
+    return { e, avg: vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0 };
+  }).sort((a,b) => b.avg - a.avg);
+  selectedCountries = new Set(avgs.slice(0,n).map(x => x.e));
+  _updateChipStyles(); updateCount(); updateMapYear(); renderTimeline();
+}
+function selectAll(){
+  selectedCountries = new Set(allEntities);
+  _updateChipStyles(); updateCount(); updateMapYear(); renderTimeline();
+}
+function clearSelection(){
+  selectedCountries.clear();
+  _updateChipStyles(); updateCount(); updateMapYear(); renderTimeline();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TIMELINE — muestra países seleccionados
+════════════════════════════════════════════════════════════════ */
+function renderTimeline(){
+  if(!csvData.length) return;
+
+  const sel = selectedCountries.size > 0
+    ? [...selectedCountries]
+    : (document.getElementById('csv-region')?.value
+        ? [document.getElementById('csv-region').value] : []);
+
+  if(!sel.length){ destroyChart('timeline'); return; }
+
+  const yearsSet = new Set();
+  sel.forEach(e => csvData.filter(r => r.entity === e).forEach(r => yearsSet.add(r.year)));
+  const labels = [...yearsSet].sort((a,b) => a-b);
+
+  const allVals = csvData.filter(r => sel.includes(r.entity)).map(r => r.value).filter(v => !isNaN(v));
+  const maxV    = allVals.length ? Math.max(...allVals) : 100;
+  const yLabel  = maxV <= 100 ? '% Energía Primaria Renovable' : 'Valor';
+
+  const datasets = sel.slice(0,20).map((entity, i) => {
+    const yMap = Object.fromEntries(
+      csvData.filter(r => r.entity === entity).map(r => [r.year, r.value])
+    );
+    return {
+      label: entity,
+      data: labels.map(y => yMap[y] ?? null),
+      borderColor: LINE_PALETTE[i % LINE_PALETTE.length],
+      backgroundColor: LINE_PALETTE[i % LINE_PALETTE.length] + '22',
+      borderWidth: 2, pointRadius: 1.5, pointHoverRadius: 5,
+      tension: .35, fill: false, spanGaps: true
+    };
+  });
+
+  destroyChart('timeline');
+  const ctx = document.getElementById('timelineChart').getContext('2d');
+  charts.timeline = new Chart(ctx, {
+    type: 'line', data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: {
+          labels:{ color:'#e4f0e7', font:{ family:"'Space Mono'", size:9 }, boxWidth:12, padding:10 },
+          position: sel.length > 6 ? 'right' : 'top'
+        },
+        tooltip: {
+          backgroundColor:'rgba(7,16,10,.97)', borderColor:'rgba(61,255,122,.2)', borderWidth:1,
+          titleFont:{ family:"'Space Mono'", size:10 }, bodyFont:{ family:"'Space Mono'", size:9 },
+          callbacks:{ label: c => `  ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y.toFixed(2)+' '+yLabel : '—'}` }
+        }
+      },
+      scales: {
+        x:{ ticks:{ color:'#5a7a62', font:{ family:"'Space Mono'", size:9 }, maxTicksLimit:14 },
+            grid:{ color:'rgba(255,255,255,.04)' },
+            title:{ display:true, text:'Año', color:'#5a7a62', font:{ family:"'Space Mono'", size:9 } } },
+        y:{ ticks:{ color:'#5a7a62', font:{ family:"'Space Mono'", size:9 } },
+            grid:{ color:'rgba(255,255,255,.06)' },
+            title:{ display:true, text:yLabel, color:'#5a7a62', font:{ family:"'Space Mono'", size:9 } },
+            beginAtZero:true }
+      }
+    }
+  });
+}
+
+
+/* ════════════════════════════════
+   INIT
+═══════════════════════════════════ */
+initAIPanel();
+window.addEventListener('load',()=>setTimeout(calcular,400));
+</script>
+</body>
+</html>
+

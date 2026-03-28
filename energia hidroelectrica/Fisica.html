@@ -5,21 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Física de las Energías Renovables</title>
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-
-<!-- MathJax for LaTeX rendering -->
-<script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['\\(', '\\)']],
-      displayMath: [['\\[', '\\]']],
-      packages: {'[+]': ['ams']}
-    },
-    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
-  };
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
-=======
-
 <style>
 :root {
   --bg:      #f7f5f0;
@@ -29,17 +14,10 @@
   --ink3:    #7a7468;
   --rule:    #d8d4cc;
   --rule2:   #e8e4dc;
-
-  --accent:  #1a4a8a;
-  --gold:    #8a6a1a;
-  --red:     #8a1a2a;
-  --green:   #1a5a2a;
-=======
   --accent:  #1a4a8a;   /* deep scientific blue */
   --gold:    #8a6a1a;   /* warm amber */
   --red:     #8a1a2a;   /* deep red for equations */
   --green:   #1a5a2a;   /* forest green */
-
   --mono:    'DM Mono', monospace;
   --serif:   'Crimson Pro', Georgia, serif;
   --sans:    'DM Sans', sans-serif;
@@ -70,55 +48,13 @@ body::before {
 /* ── LAYOUT ── */
 .wrap { position: relative; z-index: 1; max-width: var(--wide); margin: 0 auto; padding: 0 32px 100px; }
 
-
-/* ── TOP BAR with back button ── */
-.top-bar {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(247,245,240,.97);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--rule);
-  padding: 0 32px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 52px;
-  gap: 16px;
-}
-.back-btn-top {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: .68rem; letter-spacing: .10em;
-  text-transform: uppercase; color: var(--paper);
-  background: var(--accent);
-  text-decoration: none;
-  border: none; cursor: pointer;
-  padding: 7px 16px; border-radius: 3px;
-  transition: background .2s, transform .15s;
-  white-space: nowrap;
-}
-.back-btn-top:hover { background: #0f2f5e; transform: translateX(-2px); }
-.back-btn-top::before { content: '←'; font-size: .85rem; }
-
-.top-bar-title {
-  font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--ink3);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-
-/* ── NAV BAR ── */
-nav.main-nav {
-  position: sticky; top: 52px; z-index: 100;
-=======
 /* ── NAV BAR ── */
 nav {
   position: sticky; top: 0; z-index: 100;
-
   background: rgba(247,245,240,.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule);
   padding: 0 32px;
-
-  display: flex; align-items: center; justify-content: flex-end;
-  height: 48px;
-}
-=======
   display: flex; align-items: center; justify-content: space-between;
   height: 56px;
 }
@@ -128,7 +64,6 @@ nav {
   display: flex; align-items: center; gap: 8px;
 }
 .nav-brand::before { content: '←'; font-size: .9rem; }
-
 .nav-links { display: flex; gap: 24px; }
 .nav-links a {
   font-family: var(--sans); font-size: .78rem; color: var(--ink3);
@@ -179,10 +114,7 @@ h1.hero-title em { font-style: italic; color: var(--accent); }
 .tag.e  { color: var(--gold);   border-color: var(--gold);   background: rgba(138,106,26,.06); }
 .tag.f  { color: var(--green);  border-color: var(--green);  background: rgba(26,90,42,.06); }
 
-
-=======
 /* Hero SVG illustration */
-
 .hero-illustration {
   display: flex; align-items: center; justify-content: center;
 }
@@ -267,20 +199,9 @@ p.body-text strong { color: var(--ink); font-weight: 600; }
   color: var(--red);
 }
 .eq-main {
-
-  font-family: var(--mono); font-size: 1.1rem; color: var(--ink);
-  text-align: center; padding: 10px 0;
-  font-weight: 500;
-  overflow-x: auto;
-}
-/* MathJax rendered equations */
-.eq-main .MJX-TEX, .eq-main mjx-container {
-  font-size: 1.15rem !important;
-=======
   font-family: var(--mono); font-size: 1.25rem; color: var(--ink);
   text-align: center; letter-spacing: .06em; padding: 8px 0;
   font-weight: 500;
-
 }
 .eq-desc {
   font-family: var(--sans); font-size: .78rem; color: var(--ink3);
@@ -367,11 +288,7 @@ p.body-text strong { color: var(--ink); font-weight: 600; }
 /* ── ANIMATED DIAGRAMS SVG ── */
 .svg-wrap { width: 100%; }
 
-
-/* ── BACK BUTTON (footer) ── */
-=======
 /* ── BACK BUTTON ── */
-
 .back-btn {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--sans); font-size: .82rem; color: var(--accent);
@@ -411,20 +328,9 @@ footer {
 </head>
 <body>
 
-
-<!-- ══ TOP BAR WITH BACK BUTTON ══ -->
-<div class="top-bar">
-  <a class="back-btn-top" href="Calculadora Proyecto.html">Volver a EcoCalc</a>
-  <span class="top-bar-title">Física de las Energías Renovables</span>
-</div>
-
-<!-- NAV -->
-<nav class="main-nav">
-=======
 <!-- NAV -->
 <nav>
-  <a class="nav-brand" href="Calculadora Proyecto.html">Volver a EcoCalc</a>
-
+  <a class="nav-brand" href="ecocalc-v2.html">Volver a EcoCalc</a>
   <div class="nav-links">
     <a href="#cuantica">Cuántica</a>
     <a href="#electromagnetismo">Electromagnetismo</a>
@@ -453,10 +359,7 @@ footer {
     </div>
   </div>
   <div class="hero-illustration">
-
-
     <!-- Animated energy spectrum SVG -->
-
     <svg viewBox="0 0 320 320" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="glow" cx="50%" cy="50%" r="50%">
@@ -465,26 +368,6 @@ footer {
         </radialGradient>
       </defs>
       <circle cx="160" cy="160" r="140" fill="url(#glow)"/>
-
-      <ellipse cx="160" cy="160" rx="120" ry="40" fill="none" stroke="#d8d4cc" stroke-width="1"/>
-      <ellipse cx="160" cy="160" rx="120" ry="40" fill="none" stroke="#d8d4cc" stroke-width="1" transform="rotate(60 160 160)"/>
-      <ellipse cx="160" cy="160" rx="120" ry="40" fill="none" stroke="#d8d4cc" stroke-width="1" transform="rotate(120 160 160)"/>
-      <circle cx="160" cy="160" r="12" fill="#1a4a8a" opacity=".8"/>
-      <circle cx="160" cy="160" r="8" fill="#f7f5f0"/>
-      <circle cx="160" cy="160" r="4" fill="#1a4a8a"/>
-      <circle r="5" fill="#8a6a1a">
-        <animateMotion dur="2.5s" repeatCount="indefinite"><mpath href="#orbit1"/></animateMotion>
-      </circle>
-      <circle r="5" fill="#8a1a2a">
-        <animateMotion dur="3.8s" repeatCount="indefinite" begin="1s"><mpath href="#orbit2"/></animateMotion>
-      </circle>
-      <circle r="5" fill="#1a5a2a">
-        <animateMotion dur="5s" repeatCount="indefinite" begin="2s"><mpath href="#orbit3"/></animateMotion>
-      </circle>
-      <ellipse id="orbit1" cx="160" cy="160" rx="120" ry="40" fill="none" visibility="hidden"/>
-      <ellipse id="orbit2" cx="160" cy="160" rx="120" ry="40" fill="none" visibility="hidden" transform="rotate(60 160 160)"/>
-      <ellipse id="orbit3" cx="160" cy="160" rx="120" ry="40" fill="none" visibility="hidden" transform="rotate(120 160 160)"/>
-
       <!-- Atomic orbitals -->
       <ellipse cx="160" cy="160" rx="120" ry="40" fill="none" stroke="#d8d4cc" stroke-width="1"/>
       <ellipse cx="160" cy="160" rx="120" ry="40" fill="none" stroke="#d8d4cc" stroke-width="1" transform="rotate(60 160 160)"/>
@@ -514,7 +397,6 @@ footer {
       <ellipse id="orbit2" cx="160" cy="160" rx="120" ry="40" fill="none" visibility="hidden" transform="rotate(60 160 160)"/>
       <ellipse id="orbit3" cx="160" cy="160" rx="120" ry="40" fill="none" visibility="hidden" transform="rotate(120 160 160)"/>
       <!-- Energy labels -->
-
       <text x="30" y="50" font-family="DM Mono" font-size="9" fill="#7a7468">E = hf</text>
       <text x="230" y="80" font-family="DM Mono" font-size="9" fill="#7a7468">∇×B = μ₀J</text>
       <text x="240" y="250" font-family="DM Mono" font-size="9" fill="#7a7468">ΔS ≥ 0</text>
@@ -561,18 +443,6 @@ footer {
 
   <div class="eq-box reveal">
     <span class="eq-label">Relación de Planck-Einstein</span>
-
-    <div class="eq-main">
-      \[ E = h \cdot f = \frac{h \cdot c}{\lambda} \]
-    </div>
-    <div class="eq-desc">La energía de un fotón es directamente proporcional a su frecuencia e inversamente a su longitud de onda.</div>
-    <div class="eq-vars">
-      <span class="eq-var">\(E\) — energía del fotón (J)</span>
-      <span class="eq-var">\(h\) — constante de Planck \((6.626 \times 10^{-34}\ \text{J·s})\)</span>
-      <span class="eq-var">\(f\) — frecuencia (Hz)</span>
-      <span class="eq-var">\(c\) — velocidad de la luz \((3 \times 10^8\ \text{m/s})\)</span>
-      <span class="eq-var">\(\lambda\) — longitud de onda (m)</span>
-
     <div class="eq-main">E = h · f = h · c / λ</div>
     <div class="eq-desc">La energía de un fotón es directamente proporcional a su frecuencia e inversamente a su longitud de onda.</div>
     <div class="eq-vars">
@@ -581,7 +451,6 @@ footer {
       <span class="eq-var">f — frecuencia (Hz)</span>
       <span class="eq-var">c — velocidad de la luz (3×10⁸ m/s)</span>
       <span class="eq-var">λ — longitud de onda (m)</span>
-
     </div>
   </div>
 
@@ -589,31 +458,17 @@ footer {
     <div>
       <p class="body-text">
         Para que un electrón sea liberado de un material, el fotón debe superar la
-
-        <strong>función de trabajo \(\varphi\)</strong> del material. Si la energía del fotón excede \(\varphi\),
-
         <strong>función de trabajo φ</strong> del material. Si la energía del fotón excede φ,
-
         el exceso se convierte en energía cinética del electrón emitido.
         En una celda solar, estos electrones son capturados antes de escapar.
       </p>
       <div class="eq-box">
         <span class="eq-label">Ecuación fotoeléctrica de Einstein</span>
-
-        <div class="eq-main">
-          \[ E_k = hf - \varphi \]
-        </div>
-        <div class="eq-desc">La energía cinética máxima del electrón emitido es la diferencia entre la energía del fotón y la función de trabajo del material.</div>
-        <div class="eq-vars">
-          <span class="eq-var">\(E_k\) — energía cinética del electrón</span>
-          <span class="eq-var">\(\varphi\) — función de trabajo del material (eV)</span>
-
         <div class="eq-main">Eₖ = hf − φ</div>
         <div class="eq-desc">La energía cinética máxima del electrón emitido es la diferencia entre la energía del fotón y la función de trabajo del material.</div>
         <div class="eq-vars">
           <span class="eq-var">Eₖ — energía cinética del electrón</span>
           <span class="eq-var">φ — función de trabajo del material (eV)</span>
-
         </div>
       </div>
       <p class="body-text">
@@ -625,70 +480,45 @@ footer {
       </p>
     </div>
     <div class="diagram-panel">
-
-
       <!-- Photoelectric effect animated SVG -->
-
       <svg viewBox="0 0 280 240" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
             <path d="M0 0 L6 3 L0 6 Z" fill="#1a4a8a"/>
           </marker>
         </defs>
-
-        <rect x="20" y="140" width="240" height="60" fill="#e8e4dc" stroke="#d8d4cc" stroke-width="1"/>
-        <text x="130" y="178" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#7a7468">Material semiconductor (Si)</text>
-
         <!-- Metal surface -->
         <rect x="20" y="140" width="240" height="60" fill="#e8e4dc" stroke="#d8d4cc" stroke-width="1"/>
         <text x="130" y="178" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#7a7468">Material semiconductor (Si)</text>
         <!-- Band gap diagram -->
-
         <rect x="20" y="90" width="240" height="44" fill="rgba(26,74,138,.06)" stroke="#1a4a8a" stroke-width=".5" stroke-dasharray="4,3"/>
         <text x="26" y="108" font-family="DM Mono" font-size="8" fill="#1a4a8a">Banda de conducción</text>
         <rect x="20" y="146" width="240" height="44" fill="rgba(26,74,138,.04)" stroke="#1a4a8a" stroke-width=".5" stroke-dasharray="4,3"/>
         <text x="26" y="175" font-family="DM Mono" font-size="8" fill="#7a7468">Banda de valencia</text>
-
-        <line x1="262" y1="90" x2="262" y2="140" stroke="#8a1a2a" stroke-width="1"/>
-        <text x="268" y="118" font-family="DM Mono" font-size="8" fill="#8a1a2a">Eg</text>
-        <text x="268" y="128" font-family="DM Mono" font-size="7" fill="#8a1a2a">1.1eV</text>
-
         <!-- Band gap label -->
         <line x1="262" y1="90" x2="262" y2="140" stroke="#8a1a2a" stroke-width="1"/>
         <text x="268" y="118" font-family="DM Mono" font-size="8" fill="#8a1a2a">Eg</text>
         <text x="268" y="128" font-family="DM Mono" font-size="7" fill="#8a1a2a">1.1eV</text>
         <!-- Incoming photon -->
-
         <circle r="5" fill="#e8a000" opacity=".9">
           <animate attributeName="cx" values="20;120" dur="2s" repeatCount="indefinite"/>
           <animate attributeName="cy" values="30;115" dur="2s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
         </circle>
-
-        <path d="M20,30 Q35,18 50,30 Q65,42 80,30 Q95,18 110,30" fill="none" stroke="#e8a000" stroke-width="1.5" opacity=".4">
-          <animate attributeName="opacity" values="0;.5;0" dur="2s" repeatCount="indefinite"/>
-        </path>
-
         <!-- Wave trail of photon -->
         <path d="M20,30 Q35,18 50,30 Q65,42 80,30 Q95,18 110,30" fill="none" stroke="#e8a000" stroke-width="1.5" opacity=".4">
           <animate attributeName="opacity" values="0;.5;0" dur="2s" repeatCount="indefinite"/>
         </path>
         <!-- Excited electron -->
-
         <circle r="4" fill="#1a4a8a">
           <animate attributeName="cx" values="120;120;200" dur="2s" repeatCount="indefinite" keyTimes="0;.55;1"/>
           <animate attributeName="cy" values="155;100;60" dur="2s" repeatCount="indefinite" keyTimes="0;.55;1"/>
           <animate attributeName="opacity" values="0;0;1;1" dur="2s" repeatCount="indefinite" keyTimes="0;.5;.6;1"/>
         </circle>
-
-        <text x="20" y="24" font-family="DM Mono" font-size="8" fill="#8a6a1a">fotón (hf)</text>
-        <text x="148" y="56" font-family="DM Mono" font-size="8" fill="#1a4a8a">e⁻ libre</text>
-
         <!-- Labels -->
         <text x="20" y="24" font-family="DM Mono" font-size="8" fill="#8a6a1a">fotón (hf)</text>
         <text x="148" y="56" font-family="DM Mono" font-size="8" fill="#1a4a8a">e⁻ libre</text>
         <!-- Arrow -->
-
         <path d="M 145 65 L 135 80" stroke="#1a4a8a" stroke-width="1" marker-end="url(#arr)" fill="none" opacity=".7"/>
         <text x="80" y="125" font-family="DM Mono" font-size="7" fill="#8a1a2a" text-anchor="middle">hf &gt; φ</text>
       </svg>
@@ -715,11 +545,7 @@ footer {
       <span class="concept-icon">⚡</span>
       <div class="concept-body">
         <div class="concept-title">Potencia real de un panel</div>
-
-        <div class="concept-desc">La potencia eléctrica generada depende de la irradiancia solar \(G\) (W/m²), el área \(A\) del panel y la eficiencia \(\eta\): <strong>\(P = \eta \cdot A \cdot G\)</strong>. Un panel típico de 250 W opera con \(\eta \approx 18\text{–}22\%\) bajo condiciones estándar (STC: 1000 W/m², 25°C).</div>
-
         <div class="concept-desc">La potencia eléctrica generada depende de la irradiancia solar G (W/m²), el área A del panel y la eficiencia η: <strong>P = η · A · G</strong>. Un panel típico de 250 W opera con η ≈ 18–22% bajo condiciones estándar (STC: 1000 W/m², 25°C).</div>
-
       </div>
     </div>
   </div>
@@ -727,11 +553,7 @@ footer {
   <div class="fact-box reveal">
     <div class="fact-label">💡 Dato clave</div>
     <p class="fact-text">Un solo fotón de luz visible (~2 eV) puede liberar un solo electrón en el silicio.
-
-    Para generar 1 Watt de potencia fotovoltaica se necesitan del orden de \(10^{18}\) fotones por segundo
-
     Para generar 1 Watt de potencia fotovoltaica se necesitan del orden de 10¹⁸ fotones por segundo
-
     incidiendo sobre la celda — un flujo cuántico masivo del Sol hacia la Tierra.</p>
   </div>
 </section>
@@ -762,51 +584,24 @@ footer {
     <div>
       <div class="eq-box reveal">
         <span class="eq-label">Ley de Faraday-Lenz</span>
-
-        <div class="eq-main">
-          \[ \varepsilon = -\frac{d\Phi_B}{dt} \]
-        </div>
-        <div class="eq-desc">La fuerza electromotriz inducida es igual a la tasa de cambio del flujo magnético. El signo negativo (Ley de Lenz) indica que la corriente inducida se opone al cambio que la causa.</div>
-        <div class="eq-vars">
-          <span class="eq-var">\(\varepsilon\) — fem inducida (V)</span>
-          <span class="eq-var">\(\Phi_B\) — flujo magnético (Wb = T·m²)</span>
-          <span class="eq-var">\(t\) — tiempo (s)</span>
-
         <div class="eq-main">ε = −dΦ_B / dt</div>
         <div class="eq-desc">La fuerza electromotriz inducida es igual a la tasa de cambio del flujo magnético. El signo negativo (Ley de Lenz) indica que la corriente inducida se opone al cambio que la causa.</div>
         <div class="eq-vars">
           <span class="eq-var">ε — fem inducida (V)</span>
           <span class="eq-var">Φ_B — flujo magnético (Wb = T·m²)</span>
           <span class="eq-var">t — tiempo (s)</span>
-
         </div>
       </div>
       <div class="eq-box reveal">
         <span class="eq-label">Ecuaciones de Maxwell (forma diferencial)</span>
-
-        <div class="eq-main">
-          \[ \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t} \]
-        </div>
-        <div class="eq-main" style="font-size:1rem;margin-top:8px">
-          \[ \nabla \times \mathbf{B} = \mu_0\!\left(\mathbf{J} + \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t}\right) \]
-        </div>
-
         <div class="eq-main">∇×E = −∂B/∂t</div>
         <div class="eq-main" style="font-size:1rem;margin-top:8px">∇×B = μ₀(J + ε₀ ∂E/∂t)</div>
-
         <div class="eq-desc">Las cuatro ecuaciones de Maxwell unifican electricidad, magnetismo y óptica, y son la base de todo generador eléctrico y motor de inducción.</div>
       </div>
       <p class="body-text">
         En un generador de turbina eólica, el rotor (conectado mecánicamente a las aspas)
         gira un electroimán dentro de un estátor de bobinas de cobre. El flujo magnético
         oscilante induce una <strong>corriente alterna sinusoidal</strong> cuya frecuencia
-
-        depende de la velocidad angular: \(f = \dfrac{n \cdot p}{60}\), donde \(n\) es RPM y \(p\) el número de pares de polos.
-      </p>
-    </div>
-    <div class="diagram-panel">
-      <svg viewBox="0 0 280 240" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
-
         depende de la velocidad angular: f = (n·p)/60, donde n es RPM y p el número de pares de polos.
       </p>
     </div>
@@ -814,23 +609,16 @@ footer {
       <!-- Generator animation -->
       <svg viewBox="0 0 280 240" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
         <!-- Stator coils -->
-
         <rect x="30" y="60" width="20" height="120" fill="#e8e4dc" stroke="#d8d4cc" stroke-width="1.5" rx="2"/>
         <rect x="230" y="60" width="20" height="120" fill="#e8e4dc" stroke="#d8d4cc" stroke-width="1.5" rx="2"/>
         <text x="40" y="52" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a7468">Estátor</text>
         <text x="240" y="52" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a7468">Estátor</text>
-
-
         <!-- Magnetic field lines -->
-
         <path d="M50 90 Q140 70 230 90" fill="none" stroke="#1a4a8a" stroke-width=".8" stroke-dasharray="5,3" opacity=".5"/>
         <path d="M50 120 Q140 100 230 120" fill="none" stroke="#1a4a8a" stroke-width=".8" stroke-dasharray="5,3" opacity=".5"/>
         <path d="M50 150 Q140 130 230 150" fill="none" stroke="#1a4a8a" stroke-width=".8" stroke-dasharray="5,3" opacity=".5"/>
         <path d="M50 180 Q140 160 230 180" fill="none" stroke="#1a4a8a" stroke-width=".8" stroke-dasharray="5,3" opacity=".5"/>
-
-
         <!-- Rotating rotor -->
-
         <g transform="translate(140,120)">
           <animateTransform attributeName="transform" type="rotate" from="0 140 120" to="360 140 120" dur="3s" repeatCount="indefinite"/>
           <rect x="-8" y="-55" width="16" height="110" fill="#8a6a1a" rx="3" opacity=".9"/>
@@ -838,28 +626,6 @@ footer {
           <circle cx="0" cy="0" r="8" fill="#f7f5f0"/>
           <text x="0" y="4" text-anchor="middle" font-family="DM Mono" font-size="7" fill="#1a4a8a">N</text>
         </g>
-
-        <text x="140" y="215" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#1a4a8a">ε(t) = NBAω sin(ωt)</text>
-        <path d="M30 205 Q50 195 70 205 Q90 215 110 205 Q130 195 150 205 Q170 215 190 205 Q210 195 230 205 Q250 215 260 205" fill="none" stroke="#8a1a2a" stroke-width="1.5"/>
-        <text x="140" y="30" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#3d3a34" font-weight="500">Generador de inducción (rotor)</text>
-      </svg>
-      <div class="diagram-caption">Fig. 2 — Generador de inducción. El rotor magnético girando dentro del estátor produce una FEM alterna sinusoidal \(\varepsilon(t) = NBA\omega\sin(\omega t)\).</div>
-    </div>
-  </div>
-
-  <!-- FEM del generador -->
-  <div class="eq-box reveal" style="max-width:var(--col)">
-    <span class="eq-label">FEM del generador rotativo</span>
-    <div class="eq-main">
-      \[ \varepsilon(t) = N B A \omega \sin(\omega t) \]
-    </div>
-    <div class="eq-desc">La fuerza electromotriz producida por un generador de \(N\) espiras varía sinusoidalmente con el tiempo.</div>
-    <div class="eq-vars">
-      <span class="eq-var">\(N\) — número de espiras</span>
-      <span class="eq-var">\(B\) — campo magnético (T)</span>
-      <span class="eq-var">\(A\) — área de la bobina (m²)</span>
-      <span class="eq-var">\(\omega\) — velocidad angular (rad/s)</span>
-
         <!-- Output sine wave -->
         <text x="140" y="215" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#1a4a8a">ε(t) = NBAω sin(ωt)</text>
         <path d="M30 205 Q50 195 70 205 Q90 215 110 205 Q130 195 150 205 Q170 215 190 205 Q210 195 230 205 Q250 215 260 205" fill="none" stroke="#8a1a2a" stroke-width="1.5"/>
@@ -867,7 +633,6 @@ footer {
         <text x="140" y="30" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#3d3a34" font-weight="500">Generador de inducción (rotor)</text>
       </svg>
       <div class="diagram-caption">Fig. 2 — Generador de inducción. El rotor magnético girando dentro del estátor produce una FEM alterna sinusoidal ε(t) = NBAω·sin(ωt).</div>
-
     </div>
   </div>
 
@@ -913,18 +678,6 @@ footer {
       </p>
       <div class="eq-box reveal">
         <span class="eq-label">Ecuación de Bernoulli</span>
-
-        <div class="eq-main">
-          \[ P + \tfrac{1}{2}\rho v^2 + \rho g h = \text{cte.} \]
-        </div>
-        <div class="eq-desc">A lo largo de una línea de flujo en fluido ideal, la suma de la presión estática, la presión dinámica y la presión hidrostática se conserva.</div>
-        <div class="eq-vars">
-          <span class="eq-var">\(P\) — presión estática (Pa)</span>
-          <span class="eq-var">\(\rho\) — densidad del fluido (kg/m³)</span>
-          <span class="eq-var">\(v\) — velocidad del fluido (m/s)</span>
-          <span class="eq-var">\(g\) — gravedad (9.81 m/s²)</span>
-          <span class="eq-var">\(h\) — altura (m)</span>
-
         <div class="eq-main">P + ½ρv² + ρgh = cte.</div>
         <div class="eq-desc">A lo largo de una línea de flujo en fluido ideal, la suma de la presión estática, la presión dinámica y la presión hidrostática se conserva.</div>
         <div class="eq-vars">
@@ -933,21 +686,15 @@ footer {
           <span class="eq-var">v — velocidad del fluido (m/s)</span>
           <span class="eq-var">g — gravedad (9.81 m/s²)</span>
           <span class="eq-var">h — altura (m)</span>
-
         </div>
       </div>
     </div>
     <div class="diagram-panel">
-
-      <svg viewBox="0 0 280 200" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
-        <path d="M40 100 Q80 70 160 82 Q200 88 240 100 Q200 112 160 118 Q80 130 40 100Z" fill="#e8e4dc" stroke="#3d3a34" stroke-width="1.5"/>
-
       <!-- Wind turbine blade airfoil -->
       <svg viewBox="0 0 280 200" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
         <!-- Airfoil cross-section -->
         <path d="M40 100 Q80 70 160 82 Q200 88 240 100 Q200 112 160 118 Q80 130 40 100Z" fill="#e8e4dc" stroke="#3d3a34" stroke-width="1.5"/>
         <!-- Upper streamlines (faster, lower pressure) -->
-
         <path d="M10 80 Q60 60 160 72 Q200 76 260 78" fill="none" stroke="#1a4a8a" stroke-width="1" opacity=".7">
           <animate attributeName="stroke-dashoffset" from="300" to="0" dur="1.5s" repeatCount="indefinite"/>
           <animate attributeName="stroke-dasharray" values="300" dur="0s"/>
@@ -956,9 +703,7 @@ footer {
           <animate attributeName="stroke-dashoffset" from="300" to="0" dur="1.5s" repeatCount="indefinite" begin=".2s"/>
           <animate attributeName="stroke-dasharray" values="300" dur="0s"/>
         </path>
-
         <!-- Lower streamlines (slower, higher pressure) -->
-
         <path d="M10 120 Q60 130 160 124 Q200 122 260 122" fill="none" stroke="#8a1a2a" stroke-width="1" opacity=".6">
           <animate attributeName="stroke-dashoffset" from="300" to="0" dur="2s" repeatCount="indefinite"/>
           <animate attributeName="stroke-dasharray" values="300" dur="0s"/>
@@ -967,16 +712,6 @@ footer {
           <animate attributeName="stroke-dashoffset" from="300" to="0" dur="2s" repeatCount="indefinite" begin=".3s"/>
           <animate attributeName="stroke-dasharray" values="300" dur="0s"/>
         </path>
-
-        <text x="150" y="58" font-family="DM Mono" font-size="8" fill="#1a4a8a" text-anchor="middle">P₁ (baja) — alta velocidad</text>
-        <text x="150" y="150" font-family="DM Mono" font-size="8" fill="#8a1a2a" text-anchor="middle">P₂ (alta) — baja velocidad</text>
-        <line x1="140" y1="118" x2="140" y2="86" stroke="#1a5a2a" stroke-width="2" marker-end="url(#arr2)"/>
-        <defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#1a5a2a"/></marker></defs>
-        <text x="148" y="104" font-family="DM Mono" font-size="8" fill="#1a5a2a">F_lift</text>
-        <line x1="8" y1="100" x2="36" y2="100" stroke="#7a7468" stroke-width="1.5" marker-end="url(#arr3)"/>
-        <defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#7a7468"/></marker></defs>
-        <text x="4" y="93" font-family="DM Mono" font-size="7" fill="#7a7468">viento</text>
-
         <!-- Pressure labels -->
         <text x="150" y="58" font-family="DM Mono" font-size="8" fill="#1a4a8a" text-anchor="middle">P₁ (baja) — alta velocidad</text>
         <text x="150" y="150" font-family="DM Mono" font-size="8" fill="#8a1a2a" text-anchor="middle">P₂ (alta) — baja velocidad</text>
@@ -989,7 +724,6 @@ footer {
         <defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#7a7468"/></marker></defs>
         <text x="4" y="93" font-family="DM Mono" font-size="7" fill="#7a7468">viento</text>
         <!-- Caption reference -->
-
         <text x="140" y="190" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#7a7468" font-style="italic">Perfil alar del álabe — sección transversal</text>
       </svg>
       <div class="diagram-caption">Fig. 3 — Perfil aerodinámico de un álabe de turbina. La asimetría del perfil crea velocidades diferentes arriba y abajo, generando una diferencia de presión (lift) que impulsa la rotación.</div>
@@ -1009,23 +743,6 @@ footer {
 
   <div class="eq-box reveal">
     <span class="eq-label">Potencia del viento y límite de Betz</span>
-
-    <div class="eq-main">
-      \[ P_{\max} = \frac{16}{27} \cdot \frac{1}{2}\rho A v^3 \approx 0.593 \cdot P_{\text{viento}} \]
-    </div>
-    <div class="eq-vars">
-      <span class="eq-var">\(P_{\text{viento}} = \tfrac{1}{2}\rho A v^3\) — potencia disponible en el viento (W)</span>
-      <span class="eq-var">\(P_{\max}\) — potencia máxima extraíble (W)</span>
-      <span class="eq-var">\(C_p = \tfrac{16}{27}\) — coeficiente de potencia de Betz</span>
-    </div>
-    <div class="eq-desc">La potencia disponible en el viento crece con el cubo de la velocidad. La constante \(\tfrac{16}{27}\) es el límite de Betz — el máximo teórico de extracción para cualquier turbina de eje horizontal.</div>
-    <div class="eq-vars">
-      <span class="eq-var">\(P\) — potencia (W)</span>
-      <span class="eq-var">\(\rho\) — densidad del aire (\(\approx 1.225\ \text{kg/m}^3\))</span>
-      <span class="eq-var">\(A\) — área barrida por las aspas (m²)</span>
-      <span class="eq-var">\(v\) — velocidad del viento (m/s)</span>
-      <span class="eq-var">\(\tfrac{16}{27} \approx 0.593\) — coeficiente de Betz</span>
-
     <div class="eq-main">P_max = (16/27) · ½ρAv³$ ≈ 0.593 · P_viento</div>
     <div class="eq-vars">
       <span class="eq-var">P_viento = ½ρAv³ — potencia disponible en el viento (W)</span>
@@ -1039,7 +756,6 @@ footer {
       <span class="eq-var">A — área barrida por las aspas (m²)</span>
       <span class="eq-var">v — velocidad del viento (m/s)</span>
       <span class="eq-var">16/27 ≈ 0.593 — coeficiente de Betz</span>
-
     </div>
   </div>
 
@@ -1047,31 +763,14 @@ footer {
   <div class="content-full reveal" style="margin-top:36px">
     <h3 style="font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:16px;color:var(--ink)">Energía hidráulica: gravedad + continuidad</h3>
     <p class="body-text">
-
-      En la energía hidráulica, la energía potencial del agua almacenada a altura \(h\)
-      se convierte en energía cinética al caer, y luego en energía mecánica al girar una turbina.
-      La potencia disponible es proporcional al caudal \(Q\) y a la altura de caída (cabeza hidráulica) \(H\).
-
       En la energía hidráulica, la energía potencial del agua almacenada a altura h
       se convierte en energía cinética al caer, y luego en energía mecánica al girar una turbina.
       La potencia disponible es proporcional al caudal Q y a la altura de caída (cabeza hidráulica) H.
-
     </p>
   </div>
 
   <div class="eq-box reveal">
     <span class="eq-label">Potencia hidráulica</span>
-
-    <div class="eq-main">
-      \[ P = \eta \cdot \rho \cdot g \cdot Q \cdot H \]
-    </div>
-    <div class="eq-desc">La potencia eléctrica extraíble de una central hidráulica depende de la eficiencia de la turbina, la densidad del agua, la aceleración gravitacional, el caudal y la altura de caída.</div>
-    <div class="eq-vars">
-      <span class="eq-var">\(\eta\) — eficiencia total (0.80–0.93)</span>
-      <span class="eq-var">\(\rho\) — densidad del agua (1000 kg/m³)</span>
-      <span class="eq-var">\(Q\) — caudal volumétrico (m³/s)</span>
-      <span class="eq-var">\(H\) — altura de caída neta (m)</span>
-
     <div class="eq-main">P = η · ρ · g · Q · H</div>
     <div class="eq-desc">La potencia eléctrica extraíble de una central hidráulica depende de la eficiencia de la turbina, la densidad del agua, la aceleración gravitacional, el caudal y la altura de caída.</div>
     <div class="eq-vars">
@@ -1079,7 +778,6 @@ footer {
       <span class="eq-var">ρ — densidad del agua (1000 kg/m³)</span>
       <span class="eq-var">Q — caudal volumétrico (m³/s)</span>
       <span class="eq-var">H — altura de caída neta (m)</span>
-
     </div>
   </div>
 
@@ -1088,15 +786,9 @@ footer {
     <table class="eff-table">
       <thead><tr><th>Turbina</th><th>Tipo de caída</th><th>Eficiencia típica</th><th>Rendimiento</th></tr></thead>
       <tbody>
-
-        <tr><td><strong>Pelton</strong></td><td>Alta (&gt;200 m), bajo caudal</td><td>85–92%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:90%;background:#1a4a8a"></div></div></td></tr>
-        <tr><td><strong>Francis</strong></td><td>Media (40–600 m)</td><td>80–95%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:92%;background:#1a5a2a"></div></div></td></tr>
-        <tr><td><strong>Kaplan</strong></td><td>Baja (&lt;40 m), alto caudal</td><td>80–92%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:86%;background:#8a6a1a"></div></div></td></tr>
-
         <tr><td><strong>Pelton</strong></td><td>Alta (>200 m), bajo caudal</td><td>85–92%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:90%;background:#1a4a8a"></div></div></td></tr>
         <tr><td><strong>Francis</strong></td><td>Media (40–600 m)</td><td>80–95%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:92%;background:#1a5a2a"></div></div></td></tr>
         <tr><td><strong>Kaplan</strong></td><td>Baja (<40 m), alto caudal</td><td>80–92%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:86%;background:#8a6a1a"></div></div></td></tr>
-
         <tr><td><strong>Banki-Michell</strong></td><td>Pequeña escala (2–30 m)</td><td>75–85%</td><td><div class="eff-bar-bg"><div class="eff-bar-fill" style="width:80%;background:#8a1a2a"></div></div></td></tr>
       </tbody>
     </table>
@@ -1131,115 +823,65 @@ footer {
     <div>
       <div class="eq-box reveal">
         <span class="eq-label">Eficiencia de Carnot (máximo teórico)</span>
-
-        <div class="eq-main">
-          \[ \eta_{\text{Carnot}} = 1 - \frac{T_C}{T_H} \]
-        </div>
-        <div class="eq-desc">Ninguna máquina que opere entre una fuente caliente \(T_H\) y un sumidero frío \(T_C\) puede superar la eficiencia de Carnot. Las temperaturas deben estar en Kelvin.</div>
-        <div class="eq-vars">
-          <span class="eq-var">\(T_H\) — temperatura fuente caliente (K)</span>
-          <span class="eq-var">\(T_C\) — temperatura sumidero frío (K)</span>
-          <span class="eq-var">\(\eta\) — eficiencia (0 a 1)</span>
-
         <div class="eq-main">η_Carnot = 1 − T_C / T_H</div>
         <div class="eq-desc">Ninguna máquina que opere entre una fuente caliente T_H y un sumidero frío T_C puede superar la eficiencia de Carnot. Las temperaturas deben estar en Kelvin.</div>
         <div class="eq-vars">
           <span class="eq-var">T_H — temperatura fuente caliente (K)</span>
           <span class="eq-var">T_C — temperatura sumidero frío (K)</span>
           <span class="eq-var">η — eficiencia (0 a 1)</span>
-
         </div>
       </div>
       <p class="body-text">
         Para una planta de biomasa típica con combustión a 600°C (873 K) y condensador a 30°C (303 K),
-
-        la eficiencia máxima de Carnot sería: \(\eta = 1 - \tfrac{303}{873} \approx\) <strong>65%</strong>.
-
         la eficiencia máxima de Carnot sería: η = 1 − 303/873 ≈ <strong>65%</strong>.
-
         Las plantas reales operan entre 25–40% por irreversibilidades adicionales
         (fricción, transferencia de calor no ideal, pérdidas de presión).
       </p>
       <div class="eq-box reveal">
         <span class="eq-label">Segunda Ley — Entropía</span>
-
-        <div class="eq-main">
-          \[ dS = \frac{\delta Q_{\text{rev}}}{T} \geq 0 \]
-        </div>
-        <div class="eq-desc">El incremento de entropía del universo en cualquier proceso real es siempre mayor o igual a cero. La igualdad solo se cumple en procesos reversibles ideales.</div>
-        <div class="eq-vars">
-          <span class="eq-var">\(S\) — entropía (J/K)</span>
-          <span class="eq-var">\(\delta Q_{\text{rev}}\) — calor en proceso reversible</span>
-          <span class="eq-var">\(T\) — temperatura absoluta (K)</span>
-
         <div class="eq-main">dS = δQ_rev / T ≥ 0</div>
         <div class="eq-desc">El incremento de entropía del universo en cualquier proceso real es siempre mayor o igual a cero. La igualdad solo se cumple en procesos reversibles ideales.</div>
         <div class="eq-vars">
           <span class="eq-var">S — entropía (J/K)</span>
           <span class="eq-var">δQ_rev — calor en proceso reversible</span>
           <span class="eq-var">T — temperatura absoluta (K)</span>
-
         </div>
       </div>
     </div>
     <div class="diagram-panel">
-
-      <svg viewBox="0 0 280 240" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
-
       <!-- Carnot cycle P-V diagram -->
       <svg viewBox="0 0 280 240" class="svg-wrap" xmlns="http://www.w3.org/2000/svg">
         <!-- Axes -->
-
         <line x1="40" y1="200" x2="260" y2="200" stroke="#3d3a34" stroke-width="1.5"/>
         <line x1="40" y1="200" x2="40" y2="20" stroke="#3d3a34" stroke-width="1.5"/>
         <text x="268" y="204" font-family="DM Mono" font-size="9" fill="#3d3a34">V</text>
         <text x="30" y="16" font-family="DM Mono" font-size="9" fill="#3d3a34">P</text>
-
-
         <!-- Carnot cycle -->
         <!-- 1→2 Isothermal expansion (top) -->
-
         <path d="M70 60 Q110 65 160 80" fill="none" stroke="#8a1a2a" stroke-width="2">
           <animate attributeName="stroke-dashoffset" from="120" to="0" dur="3s" repeatCount="indefinite" keyTimes="0;.3;1" values="120;0;0"/>
           <animate attributeName="stroke-dasharray" values="120" dur="0s"/>
         </path>
-
-
         <!-- 2→3 Adiabatic expansion -->
-
         <path d="M160 80 Q175 120 180 160" fill="none" stroke="#1a4a8a" stroke-width="2">
           <animate attributeName="stroke-dashoffset" from="90" to="0" dur="3s" repeatCount="indefinite" begin=".8s" keyTimes="0;.3;1" values="90;0;0"/>
           <animate attributeName="stroke-dasharray" values="90" dur="0s"/>
         </path>
-
-
         <!-- 3→4 Isothermal compression (bottom) -->
-
         <path d="M180 160 Q140 170 100 165" fill="none" stroke="#8a1a2a" stroke-width="2" stroke-dasharray="4,3" opacity=".6">
           <animate attributeName="stroke-dashoffset" from="100" to="0" dur="3s" repeatCount="indefinite" begin="1.6s" keyTimes="0;.3;1" values="100;0;0"/>
           <animate attributeName="stroke-dasharray" values="4,3"/>
         </path>
-
-
         <!-- 4→1 Adiabatic compression -->
-
         <path d="M100 165 Q78 120 70 60" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,3" opacity=".6">
           <animate attributeName="stroke-dashoffset" from="120" to="0" dur="3s" repeatCount="indefinite" begin="2.3s" keyTimes="0;.3;1" values="120;0;0"/>
           <animate attributeName="stroke-dasharray" values="4,3"/>
         </path>
-
         <!-- Labels -->
-
         <text x="58" y="55" font-family="DM Mono" font-size="7" fill="#3d3a34">1</text>
         <text x="163" y="77" font-family="DM Mono" font-size="7" fill="#3d3a34">2</text>
         <text x="183" y="162" font-family="DM Mono" font-size="7" fill="#3d3a34">3</text>
         <text x="88" y="170" font-family="DM Mono" font-size="7" fill="#3d3a34">4</text>
-
-        <text x="95" y="48" font-family="DM Mono" font-size="8" fill="#8a1a2a">T_H (isoterma caliente)</text>
-        <text x="100" y="185" font-family="DM Mono" font-size="8" fill="#1a4a8a" opacity=".7">T_C (isoterma fría)</text>
-        <text x="120" y="118" font-family="DM Mono" font-size="9" fill="#1a5a2a" text-anchor="middle">W</text>
-        <text x="120" y="128" font-family="DM Mono" font-size="7" fill="#1a5a2a" text-anchor="middle">(trabajo útil)</text>
-
         <!-- Temperature labels -->
         <text x="95" y="48" font-family="DM Mono" font-size="8" fill="#8a1a2a">T_H (isoterma caliente)</text>
         <text x="100" y="185" font-family="DM Mono" font-size="8" fill="#1a4a8a" opacity=".7">T_C (isoterma fría)</text>
@@ -1247,18 +889,13 @@ footer {
         <text x="120" y="118" font-family="DM Mono" font-size="9" fill="#1a5a2a" text-anchor="middle">W</text>
         <text x="120" y="128" font-family="DM Mono" font-size="7" fill="#1a5a2a" text-anchor="middle">(trabajo útil)</text>
         <!-- Arrows on cycle -->
-
         <text x="125" y="70" font-family="DM Mono" font-size="7" fill="#8a1a2a">→</text>
         <text x="172" y="122" font-family="DM Mono" font-size="7" fill="#1a4a8a">↓</text>
         <text x="78" y="122" font-family="DM Mono" font-size="7" fill="#1a4a8a">↑</text>
         <text x="135" y="173" font-family="DM Mono" font-size="7" fill="#8a1a2a" opacity=".7">←</text>
         <text x="140" y="220" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#7a7468" font-style="italic">Diagrama P-V — Ciclo de Carnot</text>
       </svg>
-
-      <div class="diagram-caption">Fig. 4 — Diagrama Presión-Volumen del ciclo de Carnot. El área encerrada representa el trabajo neto producido. Las líneas sólidas = procesos a alta temperatura \(T_H\); líneas punteadas = a baja temperatura \(T_C\).</div>
-
       <div class="diagram-caption">Fig. 4 — Diagrama Presión-Volumen del ciclo de Carnot. El área encerrada representa el trabajo neto producido. Las líneas sólidas = procesos a alta temperatura T_H; líneas punteadas = a baja temperatura T_C.</div>
-
     </div>
   </div>
 
@@ -1267,11 +904,7 @@ footer {
     <h3 style="font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:16px;color:var(--ink)">Biomasa: termoquímica y ciclo del carbono</h3>
     <p class="body-text">
       La biomasa almacena energía química en forma de enlaces C-H y C-C.
-
-      Su combustión es una reacción exotérmica con entalpía de reacción negativa (\(\Delta H &lt; 0\)).
-
       Su combustión es una reacción exotérmica con entalpía de reacción negativa (ΔH &lt; 0).
-
       A diferencia de los combustibles fósiles, la biomasa forma parte del
       <strong>ciclo de carbono contemporáneo</strong>: el CO₂ liberado es el mismo que fue
       absorbido durante el crecimiento de la planta, resultando en emisiones netas
@@ -1281,21 +914,11 @@ footer {
 
   <div class="eq-box reveal">
     <span class="eq-label">Combustión de celulosa (biomasa simplificada)</span>
-
-    <div class="eq-main">
-      \[ (\mathrm{C_6H_{10}O_5})_n + 6n\,\mathrm{O_2} \;\rightarrow\; 6n\,\mathrm{CO_2} + 5n\,\mathrm{H_2O} + Q \]
-    </div>
-    <div class="eq-desc">La celulosa, principal componente de la biomasa vegetal, libera aproximadamente 17.5 MJ por kilogramo al combustionar — significativamente menos que el carbón (~30 MJ/kg) o el gas natural (~55 MJ/kg).</div>
-    <div class="eq-vars">
-      <span class="eq-var">\(Q \approx 17.5\ \text{MJ/kg}\) — calor de combustión de celulosa</span>
-      <span class="eq-var">\(\Delta H_c\) — entalpía de combustión (negativa)</span>
-
     <div class="eq-main">(C₆H₁₀O₅)ₙ + 6nO₂ → 6nCO₂ + 5nH₂O + Q</div>
     <div class="eq-desc">La celulosa, principal componente de la biomasa vegetal, libera aproximadamente 17.5 MJ por kilogramo al combustionar — significativamente menos que el carbón (~30 MJ/kg) o el gas natural (~55 MJ/kg).</div>
     <div class="eq-vars">
       <span class="eq-var">Q ≈ 17.5 MJ/kg — calor de combustión de celulosa</span>
       <span class="eq-var">ΔH_c — entalpía de combustión (negativa)</span>
-
     </div>
   </div>
 
@@ -1335,11 +958,7 @@ footer {
       <div class="tl-dot" style="background:#8a1a2a"></div>
       <div class="tl-year">1824</div>
       <div class="tl-title">Carnot publica "Réflexions sur la puissance motrice du feu"</div>
-
-      <div class="tl-text">Sadi Carnot establece el límite máximo teórico de eficiencia para máquinas térmicas. La eficiencia \(\eta = 1 - T_C/T_H\) sigue siendo la referencia fundamental de toda conversión calor-trabajo.</div>
-
       <div class="tl-text">Sadi Carnot establece el límite máximo teórico de eficiencia para máquinas térmicas. La eficiencia η = 1 − T_C/T_H sigue siendo la referencia fundamental de toda conversión calor-trabajo.</div>
-
     </div>
     <div class="tl-item">
       <div class="tl-dot" style="background:#1a4a8a"></div>
@@ -1357,31 +976,19 @@ footer {
       <div class="tl-dot" style="background:#1a4a8a"></div>
       <div class="tl-year">1900</div>
       <div class="tl-title">Planck introduce la cuantización de la energía</div>
-
-      <div class="tl-text">Max Planck resuelve la catástrofe ultravioleta postulando que la energía se emite en cuantos discretos: \(E = hf\). Nace la mecánica cuántica y, con ella, la física de los semiconductores.</div>
-
       <div class="tl-text">Max Planck resuelve la catástrofe ultravioleta postulando que la energía se emite en cuantos discretos: E = hf. Nace la mecánica cuántica y, con ella, la física de los semiconductores.</div>
-
     </div>
     <div class="tl-item">
       <div class="tl-dot" style="background:#1a4a8a"></div>
       <div class="tl-year">1905</div>
       <div class="tl-title">Einstein explica el efecto fotoeléctrico</div>
-
-      <div class="tl-text">Albert Einstein propone que la luz consiste en cuantos (fotones) de energía \(E = hf\). Este trabajo, por el que recibió el Nobel en 1921, es el fundamento físico directo de la energía fotovoltaica.</div>
-
       <div class="tl-text">Albert Einstein propone que la luz consiste en cuantos (fotones) de energía E = hf. Este trabajo, por el que recibió el Nobel en 1921, es el fundamento físico directo de la energía fotovoltaica.</div>
-
     </div>
     <div class="tl-item">
       <div class="tl-dot" style="background:#1a5a2a"></div>
       <div class="tl-year">1919</div>
       <div class="tl-title">Betz deriva el límite teórico para turbinas eólicas</div>
-
-      <div class="tl-text">Albert Betz demuestra matemáticamente que ninguna turbina de eje horizontal puede capturar más del \(\tfrac{16}{27} \approx 59.3\%\) de la energía cinética del viento. Este límite todavía rige el diseño eólico actual.</div>
-
       <div class="tl-text">Albert Betz demuestra matemáticamente que ninguna turbina de eje horizontal puede capturar más del 16/27 ≈ 59.3% de la energía cinética del viento. Este límite todavía rige el diseño eólico actual.</div>
-
     </div>
     <div class="tl-item">
       <div class="tl-dot" style="background:#8a6a1a"></div>
